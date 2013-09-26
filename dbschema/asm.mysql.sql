@@ -1,7 +1,7 @@
 -- table to store list of platforms
 DROP TABLE IF EXISTS asm_platform;
 CREATE TABLE asm_platform (
-    pid                                     INT                 NOT NULL AUTO_INCREMENT,
+    pid                                     VARCHAR(32)         NOT NULL,
     pis_enabled                             TINYINT             NOT NULL DEFAULT 1,
     ptitle                                  VARCHAR(16)         NOT NULL,
     picon16                                 VARCHAR(255),
