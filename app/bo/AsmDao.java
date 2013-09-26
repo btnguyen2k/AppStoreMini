@@ -1,8 +1,11 @@
 package bo;
 
-import com.github.ddth.plommon.bo.BaseDao;
+import com.github.ddth.plommon.bo.BaseMysqlDao;
 
-public class AsmDao extends BaseDao {
+public class AsmDao extends BaseMysqlDao {
+
+    public final static String TABLE_PLATFORM = "asm_platform";
+
     /*----------------------------------------------------------------------*/
     /**
      * Creates a new platform info entry.
@@ -11,11 +14,10 @@ public class AsmDao extends BaseDao {
      * @return
      */
     public static PlatformBo createPlatform(PlatformBo platformBo) {
-        String SQL = "INSERT IGNORE INTO {0} (pid, pis_enabled, ptitle, picon16, picon24, picon32, picon48, picon64) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        // JdbcTemplate jdbcTemplate = jdbcTemplate();
-        // jdbcTemplate.update(MessageFormat.format(SQL, TABLE_ACCOUNT), new
-        // Object[] { email });
-        // removeFromCache(cacheKeyAccount(email));
+        final String[] COLUMNS = new String[] {};
+        final Object[] VALUES = new Object[] {};
+        int dbResult = insertIgnore(TABLE_PLATFORM, COLUMNS, VALUES);
+        // removeFromCache(cacheKey(platformBo));
         return platformBo;
     }
     /*----------------------------------------------------------------------*/
