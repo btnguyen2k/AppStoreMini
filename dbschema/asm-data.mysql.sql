@@ -30,6 +30,6 @@ VALUES
    ,('2', 'Team Member')
    ;
 
-INSERT INTO asm_user (uid, ulogin_name, upassword, ugroup, utimestamp_create)
+INSERT INTO asm_user (uid, ulogin_name, upassword, uemail, ugroup_id, utimestamp_create)
 VALUES
-    ('1', 'admin', LOWER(MD5('password')), '1', NOW());
+    ('1', 'admin', LOWER(MD5('password')), 'admin@localhost', '1', NOW());

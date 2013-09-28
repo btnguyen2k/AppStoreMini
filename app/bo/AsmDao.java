@@ -9,21 +9,30 @@ import com.github.ddth.plommon.bo.BaseMysqlDao;
 public class AsmDao extends BaseMysqlDao {
 
     public final static String TABLE_PLATFORM = "asm_platform";
+    public final static String TABLE_USERGROUP = "asm_usergroup";
 
     /*----------------------------------------------------------------------*/
-    private static String cacheKeyPlatform(String platformId) {
-        return "PLATFORM_" + platformId;
+    private static String cacheKeyPlatform(String id) {
+        return "PLATFORM_" + id;
+    }
+
+    private static String cacheKeyUsergroup(String id) {
+        return "USERGROUP_" + id;
     }
 
     private static String cacheKey(PlatformBo platform) {
         return cacheKeyPlatform(platform.getId());
     }
 
+    private static String cacheKey(UsergroupBo usergroup) {
+        return cacheKeyUsergroup(usergroup.getId());
+    }
+
     /*----------------------------------------------------------------------*/
     /**
      * Creates a new platform info entry.
      * 
-     * @param platformBo
+     * @param platform
      * @return
      */
     public static PlatformBo create(PlatformBo platform) {
@@ -57,7 +66,7 @@ public class AsmDao extends BaseMysqlDao {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static PlatformBo get(String id, Class<PlatformBo> clazz) {
+    public static PlatformBo getPlatform(String id) {
         final String CACHE_KEY = cacheKeyPlatform(id);
         Map<String, Object> dbRow = getFromCache(CACHE_KEY, Map.class);
         if (dbRow == null) {
@@ -96,5 +105,74 @@ public class AsmDao extends BaseMysqlDao {
         }
         return (PlatformBo) platform.markClean();
     }
+
     /*----------------------------------------------------------------------*/
+    /**
+     * Creates a new user group.
+     * 
+     * @param usergroup
+     * @return
+     */
+    public static UsergroupBo create(UsergroupBo usergroup) {
+        final String[] COLUMNS = new String[] { "gid", "gtitle" };
+        final Object[] VALUES = new Object[] { usergroup.getId(), usergroup.getTitle() };
+        insertIgnore(TABLE_USERGROUP, COLUMNS, VALUES);
+        removeFromCache(cacheKey(usergroup));
+        return (UsergroupBo) usergroup.markClean();
+    }
+
+    /**
+     * Deletes an existing usergroup.
+     * 
+     * @param usergroup
+     */
+    public static void delete(UsergroupBo usergroup) {
+        final String[] COLUMNS = new String[] { "gid" };
+        final Object[] VALUES = new Object[] { usergroup.getId() };
+        delete(TABLE_PLATFORM, COLUMNS, VALUES);
+        removeFromCache(cacheKey(usergroup));
+    }
+
+    /**
+     * Gets a usergroup by id.
+     * 
+     * @param id
+     * @param clazz
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static UsergroupBo getUsergroup(String id) {
+        final String CACHE_KEY = cacheKeyUsergroup(id);
+        Map<String, Object> dbRow = getFromCache(CACHE_KEY, Map.class);
+        if (dbRow == null) {
+            final String SQL_TEMPLATE = "SELECT gid AS {1}, gtitle AS {2} FROM {0} WHERE gid=?";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_USERGROUP,
+                    UsergroupBo.COL_ID, UsergroupBo.COL_TITLE);
+            final Object[] WHERE_VALUES = new Object[] { id };
+            List<Map<String, Object>> dbResult = select(SQL, WHERE_VALUES);
+            dbRow = dbResult != null && dbResult.size() > 0 ? dbResult.get(0) : null;
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return dbRow != null ? (UsergroupBo) new UsergroupBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Updates an existing usergroup.
+     * 
+     * @param usergroup
+     * @return
+     */
+    public static UsergroupBo update(UsergroupBo usergroup) {
+        if (usergroup.isDirty()) {
+            final String CACHE_KEY = cacheKey(usergroup);
+            final String[] COLUMNS = new String[] { "gtitle" };
+            final Object[] VALUES = new Object[] { usergroup.getTitle() };
+            final String[] WHERE_COLUMNS = new String[] { "gid" };
+            final Object[] WHERE_VALUES = new Object[] { usergroup.getId() };
+            update(TABLE_USERGROUP, COLUMNS, VALUES, WHERE_COLUMNS, WHERE_VALUES);
+            Map<String, Object> dbRow = usergroup.toMap();
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return (UsergroupBo) usergroup.markClean();
+    }
 }

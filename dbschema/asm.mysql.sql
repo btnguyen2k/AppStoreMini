@@ -27,8 +27,9 @@ CREATE TABLE asm_user (
     ulogin_name                             VARCHAR(64)         NOT NULL,
         UNIQUE INDEX (ulogin_name),
     upassword                               VARCHAR(64)         NOT NULL,
-    ugroup                                  VARCHAR(32),
-        INDEX (ugroup),
+    uemail                                  VARCHAR(100)        NOT NULL,
+    ugroup_id                               VARCHAR(32),
+        INDEX (ugroup_id),
     utimestamp_create                       TIMESTAMP           NOT NULL DEFAULT NOW(),
         INDEX (utimestamp_create),
     PRIMARY KEY (uid)
