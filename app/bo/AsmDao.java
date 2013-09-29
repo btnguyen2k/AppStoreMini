@@ -11,6 +11,7 @@ public class AsmDao extends BaseMysqlDao {
     public final static String TABLE_PLATFORM = "asm_platform";
     public final static String TABLE_USERGROUP = "asm_usergroup";
     public final static String TABLE_USER = "asm_user";
+    public final static String TABLE_APP_CATEGORY = "asm_appcategory";
 
     /*----------------------------------------------------------------------*/
     private static String cacheKeyPlatform(String id) {
@@ -25,6 +26,10 @@ public class AsmDao extends BaseMysqlDao {
         return "USER_" + id;
     }
 
+    private static String cacheKeyAppCategory(String id) {
+        return "APPCAT_" + id;
+    }
+
     private static String cacheKey(PlatformBo platform) {
         return cacheKeyPlatform(platform.getId());
     }
@@ -35,6 +40,10 @@ public class AsmDao extends BaseMysqlDao {
 
     private static String cacheKey(UserBo user) {
         return cacheKeyUser(user.getId());
+    }
+
+    private static String cacheKey(AppCategoryBo appCat) {
+        return cacheKeyUser(appCat.getId());
     }
 
     /*----------------------------------------------------------------------*/
@@ -71,7 +80,6 @@ public class AsmDao extends BaseMysqlDao {
      * Gets a platform by id.
      * 
      * @param id
-     * @param clazz
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -146,7 +154,6 @@ public class AsmDao extends BaseMysqlDao {
      * Gets a usergroup by id.
      * 
      * @param id
-     * @param clazz
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -218,7 +225,6 @@ public class AsmDao extends BaseMysqlDao {
      * Gets a user account by id.
      * 
      * @param id
-     * @param clazz
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -257,5 +263,77 @@ public class AsmDao extends BaseMysqlDao {
             putToCache(CACHE_KEY, dbRow);
         }
         return (UserBo) user.markClean();
+    }
+
+    /*----------------------------------------------------------------------*/
+    /**
+     * Creates a new app category.
+     * 
+     * @param appCat
+     * @return
+     */
+    public static AppCategoryBo create(AppCategoryBo appCat) {
+        final String[] COLUMNS = new String[] { "cid", "cparent_id", "cposition", "ctitle" };
+        final Object[] VALUES = new Object[] { appCat.getId(), appCat.getParentId(),
+                appCat.getPosition(), appCat.getTitle() };
+        insertIgnore(TABLE_APP_CATEGORY, COLUMNS, VALUES);
+        removeFromCache(cacheKey(appCat));
+        return (AppCategoryBo) appCat.markClean();
+    }
+
+    /**
+     * Deletes an existing app category.
+     * 
+     * @param appCat
+     */
+    public static void delete(AppCategoryBo appCat) {
+        final String[] COLUMNS = new String[] { "cid" };
+        final Object[] VALUES = new Object[] { appCat.getId() };
+        delete(TABLE_APP_CATEGORY, COLUMNS, VALUES);
+        removeFromCache(cacheKey(appCat));
+    }
+
+    /**
+     * Gets an app category by id.
+     * 
+     * @param id
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static AppCategoryBo getAppCategory(String id) {
+        final String CACHE_KEY = cacheKeyAppCategory(id);
+        Map<String, Object> dbRow = getFromCache(CACHE_KEY, Map.class);
+        if (dbRow == null) {
+            final String SQL_TEMPLATE = "SELECT cid AS {1}, cparent_id AS {2}, cposition AS {3}, ctitle AS {4} FROM {0} WHERE cid=?";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_APP_CATEGORY,
+                    AppCategoryBo.COL_ID, AppCategoryBo.COL_PARENT_ID, AppCategoryBo.COL_POSITION,
+                    AppCategoryBo.COL_TITLE);
+            final Object[] WHERE_VALUES = new Object[] { id };
+            List<Map<String, Object>> dbResult = select(SQL, WHERE_VALUES);
+            dbRow = dbResult != null && dbResult.size() > 0 ? dbResult.get(0) : null;
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return dbRow != null ? (AppCategoryBo) new AppCategoryBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Updates an existing app category.
+     * 
+     * @param appCat
+     * @return
+     */
+    public static AppCategoryBo update(AppCategoryBo appCat) {
+        if (appCat.isDirty()) {
+            final String CACHE_KEY = cacheKey(appCat);
+            final String[] COLUMNS = new String[] { "cparent_id", "cposition", "ctitle" };
+            final Object[] VALUES = new Object[] { appCat.getParentId(), appCat.getPosition(),
+                    appCat.getTitle() };
+            final String[] WHERE_COLUMNS = new String[] { "cid" };
+            final Object[] WHERE_VALUES = new Object[] { appCat.getId() };
+            update(TABLE_APP_CATEGORY, COLUMNS, VALUES, WHERE_COLUMNS, WHERE_VALUES);
+            Map<String, Object> dbRow = appCat.toMap();
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return (AppCategoryBo) appCat.markClean();
     }
 }
