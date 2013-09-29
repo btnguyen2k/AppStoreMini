@@ -52,7 +52,21 @@ CREATE TABLE asm_app (
     aid                                     VARCHAR(32)         NOT NULL,
     acategory_id                            VARCHAR(32),
         INDEX (acategory_id),
+    aposition                               INT                 NOT NULL DEFAULT 0,
     atitle                                  VARCHAR(100)        NOT NULL,
     asummary                                TEXT,
     PRIMARY KEY (aid)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+-- table to store application's platform releases
+DROP TABLE IF EXISTS asm_appplatform;
+CREATE TABLE asm_appplatform (
+    app_id                                  VARCHAR(32)         NOT NULL,
+    platform_id                             VARCHAR(32)         NOT NULL,
+        PRIMARY KEY (app_id, platform_id),
+    apis_enabled                            TINYINT             NOT NULL DEFAULT 1,
+    apversion                               VARCHAR(32)         NOT NULL,
+    aptimestamp_release                     DATETIME            NOT NULL,
+    aprelease_notes                         TEXT,
+    apurl_download                          VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;

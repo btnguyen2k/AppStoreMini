@@ -12,6 +12,7 @@ public class AsmDao extends BaseMysqlDao {
     public final static String TABLE_USERGROUP = "asm_usergroup";
     public final static String TABLE_USER = "asm_user";
     public final static String TABLE_APP_CATEGORY = "asm_appcategory";
+    public final static String TABLE_APPLICATION = "asm_app";
 
     /*----------------------------------------------------------------------*/
     private static String cacheKeyPlatform(String id) {
@@ -30,6 +31,10 @@ public class AsmDao extends BaseMysqlDao {
         return "APPCAT_" + id;
     }
 
+    private static String cacheKeyApplication(String id) {
+        return "APP_" + id;
+    }
+
     private static String cacheKey(PlatformBo platform) {
         return cacheKeyPlatform(platform.getId());
     }
@@ -43,7 +48,11 @@ public class AsmDao extends BaseMysqlDao {
     }
 
     private static String cacheKey(AppCategoryBo appCat) {
-        return cacheKeyUser(appCat.getId());
+        return cacheKeyAppCategory(appCat.getId());
+    }
+
+    private static String cacheKey(ApplicationBo app) {
+        return cacheKeyApplication(app.getId());
     }
 
     /*----------------------------------------------------------------------*/
@@ -335,5 +344,79 @@ public class AsmDao extends BaseMysqlDao {
             putToCache(CACHE_KEY, dbRow);
         }
         return (AppCategoryBo) appCat.markClean();
+    }
+
+    /*----------------------------------------------------------------------*/
+    /**
+     * Creates a new application.
+     * 
+     * @param app
+     * @return
+     */
+    public static ApplicationBo create(ApplicationBo app) {
+        final String[] COLUMNS = new String[] { "aid", "acategory_id", "aposition", "atitle",
+                "asummary" };
+        final Object[] VALUES = new Object[] { app.getId(), app.getCategoryId(), app.getPosition(),
+                app.getTitle(), app.getSummary() };
+        insertIgnore(TABLE_APPLICATION, COLUMNS, VALUES);
+        removeFromCache(cacheKey(app));
+        return (ApplicationBo) app.markClean();
+    }
+
+    /**
+     * Deletes an existing application.
+     * 
+     * @param app
+     */
+    public static void delete(ApplicationBo app) {
+        final String[] COLUMNS = new String[] { "aid" };
+        final Object[] VALUES = new Object[] { app.getId() };
+        delete(TABLE_APPLICATION, COLUMNS, VALUES);
+        removeFromCache(cacheKey(app));
+    }
+
+    /**
+     * Gets an application by id.
+     * 
+     * @param id
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static ApplicationBo getApplication(String id) {
+        final String CACHE_KEY = cacheKeyApplication(id);
+        Map<String, Object> dbRow = getFromCache(CACHE_KEY, Map.class);
+        if (dbRow == null) {
+            final String SQL_TEMPLATE = "SELECT aid AS {1}, acategory_id AS {2}, aposition AS {3}, atitle AS {4}, asummary AS {5} FROM {0} WHERE aid=?";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_APPLICATION,
+                    ApplicationBo.COL_ID, ApplicationBo.COL_CAT_ID, ApplicationBo.COL_POSITION,
+                    ApplicationBo.COL_TITLE, ApplicationBo.COL_SUMMARY);
+            final Object[] WHERE_VALUES = new Object[] { id };
+            List<Map<String, Object>> dbResult = select(SQL, WHERE_VALUES);
+            dbRow = dbResult != null && dbResult.size() > 0 ? dbResult.get(0) : null;
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return dbRow != null ? (ApplicationBo) new ApplicationBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Updates an existing application.
+     * 
+     * @param app
+     * @return
+     */
+    public static ApplicationBo update(ApplicationBo app) {
+        if (app.isDirty()) {
+            final String CACHE_KEY = cacheKey(app);
+            final String[] COLUMNS = new String[] { "acategory_id", "aposition", "atitle",
+                    "asummary" };
+            final Object[] VALUES = new Object[] { app.getCategoryId(), app.getPosition(),
+                    app.getTitle(), app.getSummary() };
+            final String[] WHERE_COLUMNS = new String[] { "aid" };
+            final Object[] WHERE_VALUES = new Object[] { app.getId() };
+            update(TABLE_APPLICATION, COLUMNS, VALUES, WHERE_COLUMNS, WHERE_VALUES);
+            Map<String, Object> dbRow = app.toMap();
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return (ApplicationBo) app.markClean();
     }
 }
