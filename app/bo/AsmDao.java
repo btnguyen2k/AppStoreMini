@@ -13,6 +13,7 @@ public class AsmDao extends BaseMysqlDao {
     public final static String TABLE_USER = "asm_user";
     public final static String TABLE_APP_CATEGORY = "asm_appcategory";
     public final static String TABLE_APPLICATION = "asm_app";
+    public final static String TABLE_APP_PLATFORM = "asm_appplatform";
 
     /*----------------------------------------------------------------------*/
     private static String cacheKeyPlatform(String id) {
@@ -35,6 +36,10 @@ public class AsmDao extends BaseMysqlDao {
         return "APP_" + id;
     }
 
+    private static String cacheKeyAppPlatform(String appId, String platformId) {
+        return "APPPLATFORM_" + appId + "_" + platformId;
+    }
+
     private static String cacheKey(PlatformBo platform) {
         return cacheKeyPlatform(platform.getId());
     }
@@ -53,6 +58,10 @@ public class AsmDao extends BaseMysqlDao {
 
     private static String cacheKey(ApplicationBo app) {
         return cacheKeyApplication(app.getId());
+    }
+
+    private static String cacheKey(AppPlatformBo appPlatform) {
+        return cacheKeyAppPlatform(appPlatform.getAppId(), appPlatform.getPlatformId());
     }
 
     /*----------------------------------------------------------------------*/
@@ -418,5 +427,86 @@ public class AsmDao extends BaseMysqlDao {
             putToCache(CACHE_KEY, dbRow);
         }
         return (ApplicationBo) app.markClean();
+    }
+
+    /*----------------------------------------------------------------------*/
+    /**
+     * Creates a new app platform.
+     * 
+     * @param appPlatform
+     * @return
+     */
+    public static AppPlatformBo create(AppPlatformBo appPlatform) {
+        final String[] COLUMNS = new String[] { "app_id", "platform_id", "apis_enabled",
+                "apversion", "aptimestamp_release", "aprelease_notes", "apurl_download" };
+        final Object[] VALUES = new Object[] { appPlatform.getAppId(), appPlatform.getPlatformId(),
+                appPlatform.isEnabled() ? 1 : 0, appPlatform.getVersion(),
+                appPlatform.getTimestampRelease(), appPlatform.getReleaseNotes(),
+                appPlatform.geturlDownload() };
+        insertIgnore(TABLE_APP_PLATFORM, COLUMNS, VALUES);
+        removeFromCache(cacheKey(appPlatform));
+        return (AppPlatformBo) appPlatform.markClean();
+    }
+
+    /**
+     * Deletes an existing app platform.
+     * 
+     * @param appPlatform
+     */
+    public static void delete(AppPlatformBo appPlatform) {
+        final String[] COLUMNS = new String[] { "app_id", "platform_id" };
+        final Object[] VALUES = new Object[] { appPlatform.getAppId(), appPlatform.getPlatformId() };
+        delete(TABLE_APP_PLATFORM, COLUMNS, VALUES);
+        removeFromCache(cacheKey(appPlatform));
+    }
+
+    /**
+     * Gets an app platform by id.
+     * 
+     * @param appId
+     * @param platformId
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static AppPlatformBo getAppPlatform(String appId, String platformId) {
+        final String CACHE_KEY = cacheKeyAppPlatform(appId, platformId);
+        Map<String, Object> dbRow = getFromCache(CACHE_KEY, Map.class);
+        if (dbRow == null) {
+            final String SQL_TEMPLATE = "SELECT app_id AS {1}, platform_id AS {2}, apis_enabled AS {3}, apversion AS {4}, aptimestamp_release AS {5}, aprelease_notes AS {6}, apurl_download AS {7} FROM {0} WHERE app_id=? AND platform_id=?";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_APP_PLATFORM,
+                    AppPlatformBo.COL_APP_ID, AppPlatformBo.COL_PLATFORM_ID,
+                    AppPlatformBo.COL_IS_ENABLED, AppPlatformBo.COL_VERSION,
+                    AppPlatformBo.COL_TIMESTAMP_RELEASE, AppPlatformBo.COL_RELEASE_NOTES,
+                    AppPlatformBo.COL_URL_DOWNLOAD);
+            final Object[] WHERE_VALUES = new Object[] { appId, platformId };
+            List<Map<String, Object>> dbResult = select(SQL, WHERE_VALUES);
+            dbRow = dbResult != null && dbResult.size() > 0 ? dbResult.get(0) : null;
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return dbRow != null ? (AppPlatformBo) new AppPlatformBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Updates an existing app platform.
+     * 
+     * @param appPlatform
+     * @return
+     */
+    public static AppPlatformBo update(AppPlatformBo appPlatform) {
+        if (appPlatform.isDirty()) {
+            final String CACHE_KEY = cacheKey(appPlatform);
+            final String[] COLUMNS = new String[] { "apis_enabled", "apversion",
+                    "aptimestamp_release", "aprelease_notes", "apurl_download" };
+            final Object[] VALUES = new Object[] { appPlatform.isEnabled() ? 1 : 0,
+                    appPlatform.getVersion(), appPlatform.getTimestampRelease(),
+                    appPlatform.getReleaseNotes(), appPlatform.geturlDownload() };
+            final String[] WHERE_COLUMNS = new String[] { "app_id", "platform_id" };
+            final Object[] WHERE_VALUES = new Object[] { appPlatform.getAppId(),
+                    appPlatform.getPlatformId() };
+            update(TABLE_APP_PLATFORM, COLUMNS, VALUES, WHERE_COLUMNS, WHERE_VALUES);
+            Map<String, Object> dbRow = appPlatform.toMap();
+            putToCache(CACHE_KEY, dbRow);
+        }
+        return (AppPlatformBo) appPlatform.markClean();
     }
 }
