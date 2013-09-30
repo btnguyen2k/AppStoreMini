@@ -1,10 +1,12 @@
 package bo;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.github.ddth.plommon.bo.BaseMysqlDao;
+import com.github.ddth.plommon.utils.DPathUtils;
 
 public class AsmDao extends BaseMysqlDao {
 
@@ -14,6 +16,8 @@ public class AsmDao extends BaseMysqlDao {
     public final static String TABLE_APP_CATEGORY = "asm_appcategory";
     public final static String TABLE_APPLICATION = "asm_app";
     public final static String TABLE_APP_PLATFORM = "asm_appplatform";
+
+    private final static AppPlatformBo[] EMPTY_ARR_APP_PLATFORM_BO = new AppPlatformBo[0];
 
     /*----------------------------------------------------------------------*/
     private static String cacheKeyPlatform(String id) {
@@ -38,6 +42,14 @@ public class AsmDao extends BaseMysqlDao {
 
     private static String cacheKeyAppPlatform(String appId, String platformId) {
         return "APPPLATFORM_" + appId + "_" + platformId;
+    }
+
+    private static String cacheKeyAppPlatforms(String appId) {
+        return "APPPLATFORMS_" + appId;
+    }
+
+    private static String cacheKeyAppPlatforms(ApplicationBo app) {
+        return cacheKeyAppPlatforms(app.getId());
     }
 
     private static String cacheKey(PlatformBo platform) {
@@ -484,6 +496,39 @@ public class AsmDao extends BaseMysqlDao {
             putToCache(CACHE_KEY, dbRow);
         }
         return dbRow != null ? (AppPlatformBo) new AppPlatformBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Gets app platform list for an application.
+     * 
+     * @param app
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static AppPlatformBo[] getAppPlatforms(ApplicationBo app) {
+        final String CACHE_KEY = cacheKeyAppPlatforms(app);
+        List<Map<String, Object>> dbRows = getFromCache(CACHE_KEY, List.class);
+        if (dbRows == null) {
+            final String SQL_TEMPLATE = "SELECT app_id AS {1}, platform_id AS {2} FROM {0} ORDER BY platform_id WHERE app_id=?";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_APP_PLATFORM,
+                    AppPlatformBo.COL_APP_ID, AppPlatformBo.COL_PLATFORM_ID);
+            final Object[] PARAM_VALUES = new Object[] { app.getId() };
+            dbRows = select(SQL, PARAM_VALUES);
+            putToCache(CACHE_KEY, dbRows);
+        }
+        List<AppPlatformBo> result = new ArrayList<AppPlatformBo>();
+        if (dbRows != null) {
+            for (Map<String, Object> dbRow : dbRows) {
+                String appId = DPathUtils.getValue(dbRow, AppPlatformBo.COL_APP_ID, String.class);
+                String platformId = DPathUtils.getValue(dbRow, AppPlatformBo.COL_PLATFORM_ID,
+                        String.class);
+                AppPlatformBo appPlatform = getAppPlatform(appId, platformId);
+                if (appPlatform != null) {
+                    result.add(appPlatform);
+                }
+            }
+        }
+        return result.toArray(EMPTY_ARR_APP_PLATFORM_BO);
     }
 
     /**
