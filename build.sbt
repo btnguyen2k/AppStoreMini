@@ -7,6 +7,7 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "14.0",
   "com.typesafe" %% "play-plugins-redis" % "2.1.1",
   "com.github.ddth" %% "play-module-plommon" % "0.3.2-SNAPSHOT",
+  "org.apache.directory.studio" % "org.apache.commons.codec" % "1.8",
   javaJdbc,
   javaEbean,
   cache

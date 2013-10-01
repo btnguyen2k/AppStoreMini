@@ -275,6 +275,23 @@ public class AsmDao extends BaseMysqlDao {
     }
 
     /**
+     * Gets a user account by login name
+     * 
+     * @param loginname
+     * @return
+     */
+    public static UserBo getUserByLoginname(String loginname) {
+        final String SQL_TEMPLATE = "SELECT uid AS {1}, ulogin_name AS {2} FROM {0} WHERE ulogin_name=?";
+        final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_USER, UserBo.COL_ID,
+                UserBo.COL_LOGIN_NAME);
+        final Object[] WHERE_VALUES = new Object[] { loginname };
+        List<Map<String, Object>> dbResult = select(SQL, WHERE_VALUES);
+        Map<String, Object> dbRow = dbResult != null && dbResult.size() > 0 ? dbResult.get(0)
+                : null;
+        return getUser(DPathUtils.getValue(dbRow, UserBo.COL_ID, String.class));
+    }
+
+    /**
      * Updates an existing user account.
      * 
      * @param user

@@ -1,0 +1,35 @@
+@(msg: String)
+
+@_layout(Array("dashboard")){
+    <style type="text/css">
+    .form-login {
+        padding: 19px 29px 29px;
+        border: 1px solid #bbb;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        box-shadow: 0 1px 10px #a7a7a7, inset 0 1px 0 #fff;
+    }
+    </style>
+    <div class="container" style="margin-top: 50px">
+	    <div class="row">
+	        <div class="col-md-6 col-md-offset-3">
+		        <form role="form" class="form-login" method="post" action="@routes.AdminCp.loginSubmit()">
+		            <h2>@Messages("msg.login")</h2>		          
+		        
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" class="form-control" placeholder="@Messages("msg.loginname")" name="loginname" />
+                    </div>
+                    
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>
+                        <input type="password" class="form-control" placeholder="@Messages("msg.password")" name="password" />
+                    </div>
+                    
+		            <button type="submit" class="btn btn-primary">@Messages("msg.login")</button>
+		        </form>
+		    </div>
+	    </div>
+	</div>
+}

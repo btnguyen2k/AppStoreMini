@@ -2,6 +2,9 @@ package bo;
 
 import java.util.Date;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.github.ddth.plommon.bo.BaseBo;
 
 public class UserBo extends BaseBo {
@@ -12,6 +15,27 @@ public class UserBo extends BaseBo {
     public final static String COL_EMAIL = "user_email";
     public final static String COL_GROUP_ID = "group_id";
     public final static String COL_TIMESTAMP_CREATE = "timestamp_create";
+
+    /**
+     * Hashes a password using MD5.
+     * 
+     * @param rawPassword
+     * @return
+     */
+    public static String hashPassword(String rawPassword) {
+        return DigestUtils.md5Hex(rawPassword).toLowerCase();
+    }
+
+    /**
+     * Authenticates a user's password.
+     * 
+     * @param rawPassword
+     * @return
+     */
+    public boolean authenticate(String rawPassword) {
+        String hashedPwd = hashPassword(rawPassword);
+        return StringUtils.equalsIgnoreCase(hashedPwd, getPassword());
+    }
 
     public String getId() {
         return getAttribute(COL_ID, String.class);

@@ -1,0 +1,13 @@
+msg.logout = Logout
+msg.login = Login
+error.login = Error: Login failed! Login name and/or password mismatched.
+msg.save = Save
+msg.cancel = Cancel
+msg.ok = Ok
+msg.yes = yes
+msg.no = no
+
+msg.loginname = Login Name
+msg.password = Password
+
+msg.copyright = Facebook Fanpage Tools. Brought to you by {0}
