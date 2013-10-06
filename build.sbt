@@ -13,4 +13,10 @@ libraryDependencies ++= Seq(
   cache
 )     
 
+resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
+
+resolvers += "Sonatype snapshots repository" at "http://oss.sonatype.org/content/repositories/snapshots/"
+
+resolvers += "pk11-scratch" at "http://pk11-scratch.googlecode.com/svn/trunk"
+
 play.Project.playJavaSettings
