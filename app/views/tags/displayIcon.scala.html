@@ -1,0 +1,4 @@
+@(iconPath: String, size: Integer)@if(iconPath != null 
+    && iconPath.trim() != ""){<img border="0" src="@iconPath"
+    width="@size" height="@size" />} else {<img border="0" 
+    src="@routes.Assets.at("images/transparent.png")" width="@size" height="@size" />}

@@ -7,7 +7,29 @@ msg.ok = Ok
 msg.yes = yes
 msg.no = no
 
+msg.actions = Actions
+msg.delete = Delete
+msg.edit = Edit
+
 msg.loginname = Login Name
 msg.password = Password
+
+msg.app_management = App Management
+msg.app_list = App List
+msg.app_categories = App Categories
+msg.app_platforms = App Platforms
+
+msg.app_platform.edit = Edit AppPlatform "{0}"
+msg.app_platform.edit.done = AppPlatform "{0}" has been updated successfully!
+msg.app_platform.create = Create New AppPlatform
+msg.app_platform.create.done = AppPlatform "{0}" has been created successfully!
+
+msg.platform.title = Title
+msg.platform.icon16 = Icon16
+msg.platform.icon24 = Icon24
+msg.platform.icon32 = Icon32
+msg.platform.icon48 = Icon48
+msg.platform.icon64 = Icon64
+msg.platform.isEnabled = Enabled
 
 msg.copyright = Facebook Fanpage Tools. Brought to you by {0}

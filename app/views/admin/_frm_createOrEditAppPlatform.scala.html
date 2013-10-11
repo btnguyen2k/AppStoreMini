@@ -1,0 +1,67 @@
+@(platform: bo.PlatformBo)
+            <form role="form" method="post">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="enabled" value="1" @if(platform!=null && platform.isEnabled){checked="checked"} /> @Messages("msg.platform.isEnabled")
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="frm_title">@Messages("msg.platform.title")</label>
+                    <input type="text" class="form-control" id="frm_title" name="title"
+                        value="@if(platform!=null){@tags.textOrEmpty(platform.getTitle())}"
+                        placeholder="@Messages("msg.platform.title")" />
+                </div>
+                
+                <button type="submit" class="btn btn-primary">@Messages("msg.save")</button>
+                <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp.appPlatformList()'">@Messages("msg.cancel")</button>
+                <p>&nbsp;</p>
+                
+                <table class="table table-condensed">
+                    <tr>
+                        <td cellpadding="2" width="68" style="vertical-align: middle;">@if(platform!=null){@tags.displayIcon(platform.getIcon16(), 16)}</td>
+                        <td>
+	                        <label for="frm_icon16">@Messages("msg.platform.icon16")</label>
+		                    <input type="text" class="form-control" id="frm_icon16" name="icon16"
+		                        value="@if(platform!=null){@tags.textOrEmpty(platform.getIcon16())}"
+		                        placeholder="@Messages("msg.platform.icon16")" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td cellpadding="2" width="68" style="vertical-align: middle;">@if(platform!=null){@tags.displayIcon(platform.getIcon24(), 24)}</td>
+                        <td>
+                            <label for="frm_icon24">@Messages("msg.platform.icon24")</label>
+                            <input type="text" class="form-control" id="frm_icon24" name="icon24"
+                                value="@if(platform!=null){@tags.textOrEmpty(platform.getIcon24())}"
+                                placeholder="@Messages("msg.platform.icon24")" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td cellpadding="2" width="68" style="vertical-align: middle;">@if(platform!=null){@tags.displayIcon(platform.getIcon32(), 32)}</td>
+                        <td>
+                            <label for="frm_icon32">@Messages("msg.platform.icon32")</label>
+                            <input type="text" class="form-control" id="frm_icon32" name="icon32"
+                                value="@if(platform!=null){@tags.textOrEmpty(platform.getIcon32())}"
+                                placeholder="@Messages("msg.platform.icon32")" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td cellpadding="2" width="68" style="vertical-align: middle;">@if(platform!=null){@tags.displayIcon(platform.getIcon48(), 48)}</td>
+                        <td>
+                            <label for="frm_icon48">@Messages("msg.platform.icon48")</label>
+                            <input type="text" class="form-control" id="frm_icon48" name="icon48"
+                                value="@if(platform!=null){@tags.textOrEmpty(platform.getIcon48())}"
+                                placeholder="@Messages("msg.platform.icon48")" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td cellpadding="2" width="68" style="vertical-align: middle;">@if(platform!=null){@tags.displayIcon(platform.getIcon64(), 64)}</td>
+                        <td>
+                            <label for="frm_icon64">@Messages("msg.platform.icon64")</label>
+                            <input type="text" class="form-control" id="frm_icon64" name="icon64"
+                                value="@if(platform!=null){@tags.textOrEmpty(platform.getIcon64())}"
+                                placeholder="@Messages("msg.platform.icon64")" />
+                        </td>
+                    </tr>
+                </table>
+            </form>

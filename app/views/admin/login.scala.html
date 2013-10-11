@@ -1,6 +1,20 @@
 @(msg: String)
 
-@_layout(Array("dashboard")){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>@Messages("app.name") | @Messages("app.title")</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="ThanhNB" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="@routes.Assets.at("bootstrap-3.0.0/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+    <link href="@routes.Assets.at("images/favicon.png")" rel="icon" type="image/png"/>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
+</head>
+<body>
     <style type="text/css">
     .form-login {
         padding: 19px 29px 29px;
@@ -34,4 +48,7 @@
 		    </div>
 	    </div>
 	</div>
-}
+    <script type="text/javascript" src="@routes.Assets.at("bootstrap-3.0.0/js/bootstrap.min.js")"></script>
+</body>
+</html>
+	

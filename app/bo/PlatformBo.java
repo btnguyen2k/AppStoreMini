@@ -13,7 +13,7 @@ public class PlatformBo extends BaseBo {
     public final static String COL_ICON_48 = "icon_48";
     public final static String COL_ICON_64 = "icon_64";
 
-    private final static Integer INT_0 = Integer.valueOf(0), INT_1 = Integer.valueOf(0);
+    private final static Integer INT_0 = Integer.valueOf(0), INT_1 = Integer.valueOf(1);
 
     public String getId() {
         return getAttribute(COL_ID, String.class);
@@ -28,8 +28,17 @@ public class PlatformBo extends BaseBo {
         return result != null ? result.intValue() != 0 : false;
     }
 
-    public PlatformBo setEnabled(boolean isEnabled) {
-        return (PlatformBo) setAttribute(COL_IS_ENABLED, isEnabled ? INT_1 : INT_0);
+    public boolean getEnabled() {
+        return isEnabled();
+    }
+
+    public PlatformBo setEnabled(boolean enabled) {
+        return (PlatformBo) setAttribute(COL_IS_ENABLED, enabled ? INT_1 : INT_0);
+    }
+
+    public PlatformBo setEnabled(Number enabled) {
+        return (PlatformBo) setAttribute(COL_IS_ENABLED, enabled != null
+                && enabled.longValue() != 0 ? INT_1 : INT_0);
     }
 
     public String getTitle() {
