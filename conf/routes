@@ -10,16 +10,13 @@ GET     /admin/index                controllers.AdminCp.index()
 
 GET     /admin/appList              controllers.AdminCp.appList()
 
-GET     /admin/appPlatforms         controllers.AdminCp.appPlatformList()
-
-GET     /admin/createAppPlatform    controllers.AdminCp.createAppPlatform()
-POST    /admin/createAppPlatform    controllers.AdminCp.createAppPlatformSubmit()
-
-GET     /admin/editAppPlatform      controllers.AdminCp.editAppPlatform(id: String)
-POST    /admin/editAppPlatform      controllers.AdminCp.editAppPlatformSubmit(id: String)
-
-GET     /admin/deleteAppPlatform    controllers.AdminCp.deleteAppPlatform(id: String)
-POST    /admin/deleteAppPlatform    controllers.AdminCp.deleteAppPlatformSubmit(id: String)
+GET     /admin/appPlatforms         controllers.AdminCp_Platform.appPlatformList()
+GET     /admin/createAppPlatform    controllers.AdminCp_Platform.createAppPlatform()
+POST    /admin/createAppPlatform    controllers.AdminCp_Platform.createAppPlatformSubmit()
+GET     /admin/editAppPlatform      controllers.AdminCp_Platform.editAppPlatform(id: String)
+POST    /admin/editAppPlatform      controllers.AdminCp_Platform.editAppPlatformSubmit(id: String)
+GET     /admin/deleteAppPlatform    controllers.AdminCp_Platform.deleteAppPlatform(id: String)
+POST    /admin/deleteAppPlatform    controllers.AdminCp_Platform.deleteAppPlatformSubmit(id: String)
 
 GET     /admin/                     controllers.Application.appRedirect(url="/admin/index")
 GET     /admin                      controllers.Application.appRedirect(url="/admin/index")
