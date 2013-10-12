@@ -1,0 +1,21 @@
+@(platform: bo.PlatformBo)
+
+@_layout(){
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @tags.sideMenu_appPlatformMenu()
+        </div>
+        <div class="col-md-9">
+            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app_platform.delete", platform.getTitle())</h3>
+            <form role="form" method="post">
+	            <div class="alert alert-danger">
+	                <p>@Messages("msg.app_platform.delete.confirmation", platform.getTitle())</p>
+	            </div>
+	            <button type="submit" class="btn btn-danger">@Messages("msg.ok")</button>
+                <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp.appPlatformList()'">@Messages("msg.cancel")</button
+	        </form>
+        </div>
+    </div>
+</div>
+}

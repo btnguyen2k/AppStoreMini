@@ -23,6 +23,9 @@ msg.app_platform.edit = Edit AppPlatform "{0}"
 msg.app_platform.edit.done = AppPlatform "{0}" has been updated successfully!
 msg.app_platform.create = Create New AppPlatform
 msg.app_platform.create.done = AppPlatform "{0}" has been created successfully!
+msg.app_platform.delete = Delete AppPlatform "{0}"
+msg.app_platform.delete.confirmation = Are you really sure you wish to delete AppPlatform "{0}"?
+msg.app_platform.delete.done = AppPlatform "{0}" has been deleted successfully!
 
 msg.platform.title = Title
 msg.platform.icon16 = Icon16

@@ -113,13 +113,22 @@ public class AdminCp extends Controller {
      * Handles GET:/admin/deleteAppPlatform?id=xxx
      */
     public static Result deleteAppPlatform(String id) {
-        return null;
+        PlatformBo platform = AsmDao.getPlatform(id);
+        return Results.ok(views.html.admin.app_platform_delete.render(platform));
     }
 
     /*
      * Handles POST:/admin/deleteAppPlatform?id=xxx
      */
     public static Result deleteAppPlatformSubmit(String id) {
-        return null;
+        PlatformBo platformBo = AsmDao.getPlatform(id);
+        if (platformBo == null) {
+            return null;
+        } else {
+            AsmDao.delete(platformBo);
+            String msg = Messages.get("msg.app_platform.delete.done", platformBo.getTitle());
+            flash(FLASH_APP_PLATFORM_LIST, msg);
+            return Results.redirect(routes.AdminCp.appPlatformList());
+        }
     }
 }
