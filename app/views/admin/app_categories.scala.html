@@ -1,0 +1,35 @@
+@(msg: String, categories: Array[bo.AppCategoryBo])
+
+@_layout(){
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @tags.sideMenu_appCategoryMenu()
+        </div>
+        <div class="col-md-9">
+            @if(msg!=null) {
+                <div class="alert alert-success">
+                    <p>@msg</p>
+                </div>
+            }
+            <div class="table-responsive">
+	            <table class="table table-bordered table-striped table-hover table-condensed">
+	                <thead>
+	                    <tr>
+	                       <th>@Messages("msg.app_category.title")</th>
+	                       <th style="text-align: center">@Messages("msg.actions")</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    @for(category <- categories){
+	                        <tr>
+	                           <td>@category.getTitle()</td>
+	                        </tr>
+	                    }
+	                </tbody>
+	            </table>
+	        </div>
+        </div>
+    </div>
+</div>
+}
