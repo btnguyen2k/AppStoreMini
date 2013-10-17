@@ -454,6 +454,7 @@ public class AsmDao extends BaseMysqlDao {
             update(TABLE_APP_CATEGORY, COLUMNS, VALUES, WHERE_COLUMNS, WHERE_VALUES);
             Map<String, Object> dbRow = appCat.toMap();
             putToCache(CACHE_KEY, dbRow);
+            removeFromCache(cacheKeyAllAppCategories());
         }
         return (AppCategoryBo) appCat.markClean();
     }

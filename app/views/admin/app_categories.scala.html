@@ -17,13 +17,20 @@
 	                <thead>
 	                    <tr>
 	                       <th>@Messages("msg.app_category.title")</th>
-	                       <th style="text-align: center">@Messages("msg.actions")</th>
+	                       <th style="text-align: center; width: 150px">@Messages("msg.actions")</th>
 	                    </tr>
 	                </thead>
 	                <tbody>
 	                    @for(category <- categories){
 	                        <tr>
 	                           <td>@category.getTitle()</td>
+	                           <td style="text-align: center;">
+	                               <a href="@routes.AdminCp_Category.editAppCategory(category.getId())"><i class="glyphicon glyphicon-edit" style="color: blue; font-size: x-large" title="@Messages("msg.edit")"></i></a>
+	                               <a href="@routes.AdminCp_Category.deleteAppCategory(category.getId())"><i class="glyphicon glyphicon-remove" style="color: red; font-size: x-large" title="@Messages("msg.delete")"></i></a>
+	                               &nbsp;
+	                               <a href="@routes.AdminCp_Category.moveUpAppCategory(category.getId())"><i class="glyphicon glyphicon-arrow-up" style="color: black; font-size: x-large" title="@Messages("msg.move_up")"></i></a>
+	                               <a href="@routes.AdminCp_Category.moveDownAppCategory(category.getId())"><i class="glyphicon glyphicon-arrow-down" style="color: black; font-size: x-large" title="@Messages("msg.move_down")"></i></a>
+	                           </td>
 	                        </tr>
 	                    }
 	                </tbody>

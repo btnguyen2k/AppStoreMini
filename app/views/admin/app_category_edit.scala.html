@@ -6,7 +6,8 @@
             @tags.sideMenu_appCategoryMenu()
         </div>
         <div class="col-md-9">
-            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app_category.edit")</h3>
+            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app_category.edit", category.getTitle())</h3>
+            @_frm_createOrEditAppCategory(category)
         </div>
     </div>
 </div>
