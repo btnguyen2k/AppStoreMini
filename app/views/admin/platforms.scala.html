@@ -27,25 +27,35 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                    @for(platform <- platforms){
+	                    @if(platforms==null || platforms.length==0){
 	                        <tr>
-	                           <td style="text-align: center; vertical-align: middle">
-	                               <i class="glyphicon glyphicon-ok" @if(platform.isEnabled()){style="color: green;"}else{style="color: #c0c0c0;"}></i>
-	                           </td>
-	                           <td style="vertical-align: middle">
-	                               @tags.displayIcon(platform.getIcon16(), 16) @platform.getTitle()
-	                           </td>
-	                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon16(), 16)</td>
-	                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon24(), 24)</td>
-	                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon32(), 32)</td>
-	                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon48(), 48)</td>
-	                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon64(), 64)</td>
-	                           <td style="text-align: center; vertical-align: middle">
-	                               <a href="@routes.AdminCp_Platform.editPlatform(platform.getId())"><i class="glyphicon glyphicon-edit" style="color: blue; font-size: x-large" title="@Messages("msg.edit")"></i></a>
-	                               <a href="@routes.AdminCp_Platform.deletePlatform(platform.getId())"><i class="glyphicon glyphicon-remove" style="color: red; font-size: x-large" title="@Messages("msg.delete")"></i></a>
-	                           </td>
-	                        </tr>
-	                    }
+	                           <td colspan="8">
+			                        <a class="btn btn-xs btn-primary" href="@routes.AdminCp_Platform.createPlatform()">@Messages("msg.platform.create")</a>
+		                            |
+		                            @Messages("msg.nodata")
+		                        </td>
+		                    </tr>
+	                    } else {
+		                    @for(platform <- platforms){
+		                        <tr>
+		                           <td style="text-align: center; vertical-align: middle">
+		                               <i class="glyphicon glyphicon-ok" @if(platform.isEnabled()){style="color: green;"}else{style="color: #c0c0c0;"}></i>
+		                           </td>
+		                           <td style="vertical-align: middle">
+		                               @tags.displayIcon(platform.getIcon16(), 16) @platform.getTitle()
+		                           </td>
+		                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon16(), 16)</td>
+		                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon24(), 24)</td>
+		                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon32(), 32)</td>
+		                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon48(), 48)</td>
+		                           <td style="text-align: center; vertical-align: middle">@tags.displayIcon(platform.getIcon64(), 64)</td>
+		                           <td style="text-align: center; vertical-align: middle">
+		                               <a href="@routes.AdminCp_Platform.editPlatform(platform.getId())"><i class="glyphicon glyphicon-edit" style="color: blue; font-size: x-large" title="@Messages("msg.edit")"></i></a>
+		                               <a href="@routes.AdminCp_Platform.deletePlatform(platform.getId())"><i class="glyphicon glyphicon-remove" style="color: red; font-size: x-large" title="@Messages("msg.delete")"></i></a>
+		                           </td>
+		                        </tr>
+		                    }
+		                }
 	                </tbody>
 	            </table>
 	        </div>
