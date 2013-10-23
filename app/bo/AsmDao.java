@@ -17,6 +17,7 @@ public class AsmDao extends BaseMysqlDao {
     public final static String TABLE_APPLICATION = "asm_app";
     public final static String TABLE_APP_PLATFORM = "asm_appplatform";
 
+    private final static ApplicationBo[] EMPTY_ARR_APPLICATION_BO = new ApplicationBo[0];
     private final static AppPlatformBo[] EMPTY_ARR_APP_PLATFORM_BO = new AppPlatformBo[0];
     private final static PlatformBo[] EMPTY_ARR_PLATFORM_BO = new PlatformBo[0];
     private final static AppCategoryBo[] EMPTY_ARR_APP_CATEGORY_BO = new AppCategoryBo[0];
@@ -48,6 +49,10 @@ public class AsmDao extends BaseMysqlDao {
 
     private static String cacheKeyApplication(String id) {
         return "APP_" + id;
+    }
+
+    private static String cacheKeyAllApplications() {
+        return "ALLAPPS";
     }
 
     private static String cacheKeyAppPlatform(String appId, String platformId) {
@@ -509,6 +514,36 @@ public class AsmDao extends BaseMysqlDao {
             putToCache(CACHE_KEY, dbRow);
         }
         return dbRow != null ? (ApplicationBo) new ApplicationBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Gets all applications as a list.
+     * 
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static ApplicationBo[] getAllApplications() {
+        final String CACHE_KEY = cacheKeyAllApplications();
+        List<Map<String, Object>> dbRows = getFromCache(CACHE_KEY, List.class);
+        if (dbRows == null) {
+            final String SQL_TEMPLATE = "SELECT aid AS {1} FROM {0} ORDER BY aposition";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_APPLICATION,
+                    ApplicationBo.COL_ID);
+            final Object[] PARAM_VALUES = new Object[] {};
+            dbRows = select(SQL, PARAM_VALUES);
+            putToCache(CACHE_KEY, dbRows);
+        }
+        List<ApplicationBo> result = new ArrayList<ApplicationBo>();
+        if (dbRows != null) {
+            for (Map<String, Object> dbRow : dbRows) {
+                String id = DPathUtils.getValue(dbRow, ApplicationBo.COL_ID, String.class);
+                ApplicationBo application = getApplication(id);
+                if (application != null) {
+                    result.add(application);
+                }
+            }
+        }
+        return result.toArray(EMPTY_ARR_APPLICATION_BO);
     }
 
     /**

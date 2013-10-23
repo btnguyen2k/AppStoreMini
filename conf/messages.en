@@ -6,6 +6,7 @@ msg.cancel = Cancel
 msg.ok = Ok
 msg.yes = yes
 msg.no = no
+msg.nodata = No data to display
 
 msg.actions = Actions
 msg.delete = Delete
@@ -15,7 +16,7 @@ msg.loginname = Login Name
 msg.password = Password
 
 msg.app_management = App Management
-msg.app_list = App List
+msg.apps = App List
 msg.app_categories = Categories
 msg.platforms = Platforms
 
@@ -44,5 +45,13 @@ msg.platform.icon32 = Icon32
 msg.platform.icon48 = Icon48
 msg.platform.icon64 = Icon64
 msg.platform.isEnabled = Enabled
+
+msg.app.create = Create New App
+msg.app.create.done = Application "{0}" has been created successfully!
+msg.app.edit = Edit Application "{0}"
+msg.app.edit.done = Application "{0}" has been updated successfully!
+msg.app.delete = Delete Application "{0}"
+msg.app.delete.confirmation = Are you really sure you wish to delete Application "{0}"?
+msg.app.delete.done = Application "{0}" has been deleted successfully!
 
 msg.copyright = Facebook Fanpage Tools. Brought to you by {0}

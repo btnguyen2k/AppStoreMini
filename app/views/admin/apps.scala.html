@@ -1,0 +1,46 @@
+@(msg: String, apps: Array[bo.ApplicationBo])
+
+@_layout(){
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @tags.sideMenu_applicationMenu()
+        </div>
+        <div class="col-md-9">
+            @if(msg!=null) {
+                <div class="alert alert-success">
+                    <p>@msg</p>
+                </div>
+            }
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center">&nbsp;</th>
+                            <th>@Messages("msg.app.title")</th>
+                            <th style="text-align: center">@Messages("msg.app.category")</th>
+                            <th style="text-align: center">@Messages("msg.actions")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(apps==null || apps.length==0){
+                            <tr>
+                                <td colspan="4">
+                                    <a class="btn btn-xs btn-primary" href="@routes.AdminCp_Platform.createPlatform()">@Messages("msg.app.create")</a>
+                                    |
+                                    @Messages("msg.nodata")
+                                </td>
+                            </tr>
+                        } else {
+                            @for(app <- apps){
+                                <tr>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+}

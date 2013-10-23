@@ -43,12 +43,4 @@ public class AdminCp extends Controller {
             return Results.redirect(routes.AdminCp.index());
         }
     }
-
-    /*
-     * Handles GET:/admin/appList
-     */
-    public static Result appList() {
-        String msg = flash(FLASH_APP_LIST);
-        return Results.ok(views.html.admin.app_list.render(msg));
-    }
 }
