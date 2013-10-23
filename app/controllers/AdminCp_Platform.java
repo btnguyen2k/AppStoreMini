@@ -12,81 +12,81 @@ import com.github.ddth.plommon.utils.IdGenerator;
 
 public class AdminCp_Platform extends Controller {
 
-    private final static String FLASH_APP_PLATFORM_LIST = "app_platform_list";
+    private final static String FLASH_PLATFORM_LIST = "platform_list";
 
     /*
-     * Handles GET:/admin/appPlatforms
+     * Handles GET:/admin/platforms
      */
-    public static Result appPlatformList() {
-        String msg = flash(FLASH_APP_PLATFORM_LIST);
+    public static Result platformList() {
+        String msg = flash(FLASH_PLATFORM_LIST);
         PlatformBo[] allPlatforms = AsmDao.getAllPlatforms();
         return Results.ok(views.html.admin.app_platforms.render(msg, allPlatforms));
     }
 
     /*
-     * Handles GET:/admin/createAppPlatform
+     * Handles GET:/admin/createPlatform
      */
-    public static Result createAppPlatform() {
+    public static Result createPlatform() {
         return Results.ok(views.html.admin.app_platform_create.render(null));
     }
 
     /*
-     * Handles POST:/admin/createAppPlatform
+     * Handles POST:/admin/createPlatform
      */
-    public static Result createAppPlatformSubmit() {
+    public static Result createPlatformSubmit() {
         IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
         PlatformBo platformBo = Form.form(PlatformBo.class).bindFromRequest().get();
         platformBo.setId(idGen.generateIdTinyHex());
-        String msg = Messages.get("msg.app_platform.create.done", platformBo.getTitle());
-        flash(FLASH_APP_PLATFORM_LIST, msg);
+        String msg = Messages.get("msg.platform.create.done", platformBo.getTitle());
+        flash(FLASH_PLATFORM_LIST, msg);
         AsmDao.create(platformBo);
-        return Results.redirect(routes.AdminCp_Platform.appPlatformList());
+        return Results.redirect(routes.AdminCp_Platform.platformList());
     }
 
     /*
-     * Handles GET:/admin/editAppPlatform
+     * Handles GET:/admin/editPlatform
      */
-    public static Result editAppPlatform(String id) {
+    public static Result editPlatform(String id) {
         PlatformBo platform = AsmDao.getPlatform(id);
         return Results.ok(views.html.admin.app_platform_edit.render(platform));
     }
 
     /*
-     * Handles POST:/admin/editAppPlatform
+     * Handles POST:/admin/editPlatform
      */
-    public static Result editAppPlatformSubmit(String id) {
+    public static Result editPlatformSubmit(String id) {
         PlatformBo platformBo = AsmDao.getPlatform(id);
         if (platformBo == null) {
             return null;
         } else {
             platformBo = Form.form(PlatformBo.class).bindFromRequest().get();
             platformBo = AsmDao.update(platformBo);
-            String msg = Messages.get("msg.app_platform.edit.done", platformBo.getTitle());
-            flash(FLASH_APP_PLATFORM_LIST, msg);
-            return Results.redirect(routes.AdminCp_Platform.appPlatformList());
+            String msg = Messages.get("msg.platform.edit.done", platformBo.getTitle());
+            flash(FLASH_PLATFORM_LIST, msg);
+            return Results.redirect(routes.AdminCp_Platform.platformList());
         }
     }
 
     /*
-     * Handles GET:/admin/deleteAppPlatform?id=xxx
+     * Handles GET:/admin/deletePlatform?id=xxx
      */
-    public static Result deleteAppPlatform(String id) {
+    public static Result deletePlatform(String id) {
         PlatformBo platform = AsmDao.getPlatform(id);
         return Results.ok(views.html.admin.app_platform_delete.render(platform));
     }
 
     /*
-     * Handles POST:/admin/deleteAppPlatform?id=xxx
+     * Handles POST:/admin/deletePlatform?id=xxx
      */
-    public static Result deleteAppPlatformSubmit(String id) {
+    public static Result deletePlatformSubmit(String id) {
         PlatformBo platformBo = AsmDao.getPlatform(id);
         if (platformBo == null) {
             return null;
         } else {
             AsmDao.delete(platformBo);
-            String msg = Messages.get("msg.app_platform.delete.done", platformBo.getTitle());
-            flash(FLASH_APP_PLATFORM_LIST, msg);
-            return Results.redirect(routes.AdminCp_Platform.appPlatformList());
+            String msg = Messages.get("msg.platform.delete.done", platformBo.getTitle());
+            flash(FLASH_PLATFORM_LIST, msg);
+            return Results.redirect(routes.AdminCp_Platform.platformList());
         }
     }
 }

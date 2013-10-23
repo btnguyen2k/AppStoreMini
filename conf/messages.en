@@ -17,7 +17,7 @@ msg.password = Password
 msg.app_management = App Management
 msg.app_list = App List
 msg.app_categories = App Categories
-msg.app_platforms = App Platforms
+msg.platforms = Platforms
 
 msg.app_category.create = Create New AppCategory
 msg.app_category.create.done = AppCategory "{0}" has been created successfully!
@@ -29,13 +29,13 @@ msg.app_category.edit.done = AppCategory "{0}" has been updated successfully!
 
 msg.app_category.title = Title
 
-msg.app_platform.edit = Edit AppPlatform "{0}"
-msg.app_platform.edit.done = AppPlatform "{0}" has been updated successfully!
-msg.app_platform.create = Create New AppPlatform
-msg.app_platform.create.done = AppPlatform "{0}" has been created successfully!
-msg.app_platform.delete = Delete AppPlatform "{0}"
-msg.app_platform.delete.confirmation = Are you really sure you wish to delete AppPlatform "{0}"?
-msg.app_platform.delete.done = AppPlatform "{0}" has been deleted successfully!
+msg.platform.edit = Edit Platform "{0}"
+msg.platform.edit.done = Platform "{0}" has been updated successfully!
+msg.platform.create = Create New Platform
+msg.platform.create.done = Platform "{0}" has been created successfully!
+msg.platform.delete = Delete Platform "{0}"
+msg.platform.delete.confirmation = Are you really sure you wish to delete Platform "{0}"?
+msg.platform.delete.done = Platform "{0}" has been deleted successfully!
 
 msg.platform.title = Title
 msg.platform.icon16 = Icon16
