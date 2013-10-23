@@ -20,14 +20,14 @@ public class AdminCp_Platform extends Controller {
     public static Result platformList() {
         String msg = flash(FLASH_PLATFORM_LIST);
         PlatformBo[] allPlatforms = AsmDao.getAllPlatforms();
-        return Results.ok(views.html.admin.app_platforms.render(msg, allPlatforms));
+        return Results.ok(views.html.admin.platforms.render(msg, allPlatforms));
     }
 
     /*
      * Handles GET:/admin/createPlatform
      */
     public static Result createPlatform() {
-        return Results.ok(views.html.admin.app_platform_create.render(null));
+        return Results.ok(views.html.admin.platform_create.render(null));
     }
 
     /*
@@ -48,7 +48,7 @@ public class AdminCp_Platform extends Controller {
      */
     public static Result editPlatform(String id) {
         PlatformBo platform = AsmDao.getPlatform(id);
-        return Results.ok(views.html.admin.app_platform_edit.render(platform));
+        return Results.ok(views.html.admin.platform_edit.render(platform));
     }
 
     /*
@@ -72,7 +72,7 @@ public class AdminCp_Platform extends Controller {
      */
     public static Result deletePlatform(String id) {
         PlatformBo platform = AsmDao.getPlatform(id);
-        return Results.ok(views.html.admin.app_platform_delete.render(platform));
+        return Results.ok(views.html.admin.platform_delete.render(platform));
     }
 
     /*

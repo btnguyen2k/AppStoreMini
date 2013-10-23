@@ -14,13 +14,13 @@ import com.github.ddth.plommon.utils.IdGenerator;
 
 public class AdminCp_Category extends Controller {
 
-    private final static String FLASH_APP_CATEGORY_LIST = "app_category_list";
+    private final static String FLASH_CATEGORY_LIST = "category_list";
 
     /*
      * Handles GET:/admin/appCategories
      */
     public static Result appCategoryList() {
-        String msg = flash(FLASH_APP_CATEGORY_LIST);
+        String msg = flash(FLASH_CATEGORY_LIST);
         AppCategoryBo[] allCategories = AsmDao.getAllAppCategories();
         return Results.ok(views.html.admin.app_categories.render(msg, allCategories));
     }
@@ -41,7 +41,7 @@ public class AdminCp_Category extends Controller {
         categoryBo.setId(idGen.generateIdTinyHex());
         categoryBo.setPosition((int) (System.currentTimeMillis() / 1000));
         String msg = Messages.get("msg.app_category.create.done", categoryBo.getTitle());
-        flash(FLASH_APP_CATEGORY_LIST, msg);
+        flash(FLASH_CATEGORY_LIST, msg);
         AsmDao.create(categoryBo);
         return Results.redirect(routes.AdminCp_Category.appCategoryList());
     }
@@ -66,7 +66,7 @@ public class AdminCp_Category extends Controller {
             category.setTitle(temp.getTitle());
             category = AsmDao.update(category);
             String msg = Messages.get("msg.app_category.edit.done", category.getTitle());
-            flash(FLASH_APP_CATEGORY_LIST, msg);
+            flash(FLASH_CATEGORY_LIST, msg);
             return Results.redirect(routes.AdminCp_Category.appCategoryList());
         }
     }
@@ -94,7 +94,7 @@ public class AdminCp_Category extends Controller {
                 }
             }
             String msg = Messages.get("msg.app_category.edit.done", category.getTitle());
-            flash(FLASH_APP_CATEGORY_LIST, msg);
+            flash(FLASH_CATEGORY_LIST, msg);
         }
         return Results.redirect(routes.AdminCp_Category.appCategoryList());
     }
@@ -123,7 +123,7 @@ public class AdminCp_Category extends Controller {
 
             }
             String msg = Messages.get("msg.app_category.edit.done", category.getTitle());
-            flash(FLASH_APP_CATEGORY_LIST, msg);
+            flash(FLASH_CATEGORY_LIST, msg);
         }
         return Results.redirect(routes.AdminCp_Category.appCategoryList());
     }
@@ -146,7 +146,7 @@ public class AdminCp_Category extends Controller {
         } else {
             AsmDao.delete(category);
             String msg = Messages.get("msg.app_category.delete.done", category.getTitle());
-            flash(FLASH_APP_CATEGORY_LIST, msg);
+            flash(FLASH_CATEGORY_LIST, msg);
             return Results.redirect(routes.AdminCp_Category.appCategoryList());
         }
     }
