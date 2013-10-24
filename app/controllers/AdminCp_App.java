@@ -5,6 +5,7 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Results;
+import bo.AppCategoryBo;
 import bo.ApplicationBo;
 import bo.AsmDao;
 import bo.PlatformBo;
@@ -25,23 +26,24 @@ public class AdminCp_App extends Controller {
     }
 
     /*
-     * Handles GET:/admin/createPlatform
+     * Handles GET:/admin/createApp
      */
-    public static Result createPlatform() {
-        return Results.ok(views.html.admin.platform_create.render(null));
+    public static Result createApp() {
+        AppCategoryBo[] allCategories = AsmDao.getAllAppCategories();
+        return Results.ok(views.html.admin.app_create.render(null, allCategories));
     }
 
     /*
-     * Handles POST:/admin/createPlatform
+     * Handles POST:/admin/createApp
      */
-    public static Result createPlatformSubmit() {
+    public static Result createAppSubmit() {
         IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
-        PlatformBo platformBo = Form.form(PlatformBo.class).bindFromRequest().get();
-        platformBo.setId(idGen.generateIdTinyHex());
-        String msg = Messages.get("msg.platform.create.done", platformBo.getTitle());
+        ApplicationBo application = Form.form(ApplicationBo.class).bindFromRequest().get();
+        application.setId(idGen.generateIdTinyHex());
+        String msg = Messages.get("msg.app.create.done", application.getTitle());
         flash(FLASH_APP_LIST, msg);
-        AsmDao.create(platformBo);
-        return Results.redirect(routes.AdminCp_Platform.platformList());
+        AsmDao.create(application);
+        return Results.redirect(routes.AdminCp_App.appList());
     }
 
     /*

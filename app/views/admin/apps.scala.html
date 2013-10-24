@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
-            @tags.sideMenu_applicationMenu()
+            @tags.sideMenu_appMenu()
         </div>
         <div class="col-md-9">
             @if(msg!=null) {
@@ -26,7 +26,7 @@
                         @if(apps==null || apps.length==0){
                             <tr>
                                 <td colspan="4">
-                                    <a class="btn btn-xs btn-primary" href="@routes.AdminCp_Platform.createPlatform()">@Messages("msg.app.create")</a>
+                                    <a class="btn btn-xs btn-primary" href="@routes.AdminCp_App.createApp()">@Messages("msg.app.create")</a>
                                     |
                                     @Messages("msg.nodata")
                                 </td>

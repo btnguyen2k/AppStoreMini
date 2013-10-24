@@ -9,6 +9,8 @@ POST    /admin/login                controllers.AdminCp.loginSubmit()
 GET     /admin/index                controllers.AdminCp.index()
 
 GET     /admin/apps                 controllers.AdminCp_App.appList()
+GET     /admin/createApp            controllers.AdminCp_App.createApp()
+POST    /admin/createApp            controllers.AdminCp_App.createAppSubmit()
 
 GET     /admin/platforms            controllers.AdminCp_Platform.platformList()
 GET     /admin/createPlatform       controllers.AdminCp_Platform.createPlatform()

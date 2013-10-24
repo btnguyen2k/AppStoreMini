@@ -1,0 +1,20 @@
+@(app: bo.ApplicationBo, categories: Array[bo.AppCategoryBo])
+<form role="form" method="post">
+    <div class="form-group">
+        <label for="frm_title">@Messages("msg.app.title")</label>
+        <input type="text" class="form-control" id="frm_title" name="title"
+            value="@if(app!=null){@tags.textOrEmpty(app.getTitle())}"
+            placeholder="@Messages("msg.app.title")" />
+    </div>
+    
+    <div class="form-group">
+        <label for="frm_category">@Messages("msg.app.category")</label>
+        <select class="form-control" id="frm_category" name="categoryId">
+            <option value=""></option>
+        </select>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">@Messages("msg.save")</button>
+    <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp_App.appList()'">@Messages("msg.cancel")</button>
+    <p>&nbsp;</p>
+</form>
