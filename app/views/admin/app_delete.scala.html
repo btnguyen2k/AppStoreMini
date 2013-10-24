@@ -1,0 +1,20 @@
+@(app: bo.ApplicationBo)
+@_layout(){
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @tags.sideMenu_appMenu()
+        </div>
+        <div class="col-md-9">
+            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app.delete", app.getTitle())</h3>
+            <form role="form" method="post">
+	            <div class="alert alert-danger">
+	                <p>@Messages("msg.app.delete.confirmation", app.getTitle())</p>
+	            </div>
+	            <button type="submit" class="btn btn-danger">@Messages("msg.ok")</button>
+                <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp_App.appList()'">@Messages("msg.cancel")</button
+	        </form>
+        </div>
+    </div>
+</div>
+}

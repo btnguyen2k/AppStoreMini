@@ -8,7 +8,6 @@ import play.mvc.Results;
 import bo.AppCategoryBo;
 import bo.ApplicationBo;
 import bo.AsmDao;
-import bo.PlatformBo;
 
 import com.github.ddth.plommon.utils.IdGenerator;
 
@@ -40,6 +39,7 @@ public class AdminCp_App extends Controller {
         IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
         ApplicationBo application = Form.form(ApplicationBo.class).bindFromRequest().get();
         application.setId(idGen.generateIdTinyHex());
+        application.setPosition((int) (System.currentTimeMillis() / 1000));
         String msg = Messages.get("msg.app.create.done", application.getTitle());
         flash(FLASH_APP_LIST, msg);
         AsmDao.create(application);
@@ -47,49 +47,52 @@ public class AdminCp_App extends Controller {
     }
 
     /*
-     * Handles GET:/admin/editPlatform
+     * Handles GET:/admin/editApp?id=xxx
      */
-    public static Result editPlatform(String id) {
-        PlatformBo platform = AsmDao.getPlatform(id);
-        return Results.ok(views.html.admin.platform_edit.render(platform));
+    public static Result editApp(String id) {
+        ApplicationBo application = AsmDao.getApplication(id);
+        AppCategoryBo[] allCategories = AsmDao.getAllAppCategories();
+        return Results.ok(views.html.admin.app_edit.render(application, allCategories));
     }
 
     /*
-     * Handles POST:/admin/editPlatform
+     * Handles POST:/admin/editApp?id=xxx
      */
-    public static Result editPlatformSubmit(String id) {
-        PlatformBo platformBo = AsmDao.getPlatform(id);
-        if (platformBo == null) {
+    public static Result editAppSubmit(String id) {
+        ApplicationBo application = AsmDao.getApplication(id);
+        if (application == null) {
             return null;
         } else {
-            platformBo = Form.form(PlatformBo.class).bindFromRequest().get();
-            platformBo = AsmDao.update(platformBo);
-            String msg = Messages.get("msg.platform.edit.done", platformBo.getTitle());
+            Integer oldPosition = application.getPosition();
+            application = Form.form(ApplicationBo.class).bindFromRequest().get();
+            application.setPosition(oldPosition);
+            application = AsmDao.update(application);
+            String msg = Messages.get("msg.app.edit.done", application.getTitle());
             flash(FLASH_APP_LIST, msg);
-            return Results.redirect(routes.AdminCp_Platform.platformList());
+            return Results.redirect(routes.AdminCp_App.appList());
         }
     }
 
     /*
-     * Handles GET:/admin/deletePlatform?id=xxx
+     * Handles GET:/admin/deleteApp?id=xxx
      */
-    public static Result deletePlatform(String id) {
-        PlatformBo platform = AsmDao.getPlatform(id);
-        return Results.ok(views.html.admin.platform_delete.render(platform));
+    public static Result deleteApp(String id) {
+        ApplicationBo application = AsmDao.getApplication(id);
+        return Results.ok(views.html.admin.app_delete.render(application));
     }
 
     /*
-     * Handles POST:/admin/deletePlatform?id=xxx
+     * Handles POST:/admin/deleteApp?id=xxx
      */
-    public static Result deletePlatformSubmit(String id) {
-        PlatformBo platformBo = AsmDao.getPlatform(id);
-        if (platformBo == null) {
+    public static Result deleteAppSubmit(String id) {
+        ApplicationBo application = AsmDao.getApplication(id);
+        if (application == null) {
             return null;
         } else {
-            AsmDao.delete(platformBo);
-            String msg = Messages.get("msg.platform.delete.done", platformBo.getTitle());
+            AsmDao.delete(application);
+            String msg = Messages.get("msg.app.delete.done", application.getTitle());
             flash(FLASH_APP_LIST, msg);
-            return Results.redirect(routes.AdminCp_Platform.platformList());
+            return Results.redirect(routes.AdminCp_App.appList());
         }
     }
 }

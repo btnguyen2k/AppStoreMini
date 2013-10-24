@@ -54,6 +54,7 @@ CREATE TABLE asm_app (
         INDEX (acategory_id),
     aposition                               INT                 NOT NULL DEFAULT 0,
     atitle                                  VARCHAR(100)        NOT NULL,
+    aicon                                   VARCHAR(255),
     asummary                                TEXT,
     PRIMARY KEY (aid)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;

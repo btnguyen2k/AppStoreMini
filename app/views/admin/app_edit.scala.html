@@ -1,0 +1,14 @@
+@(app: bo.ApplicationBo, categories: Array[bo.AppCategoryBo])
+@_layout(){
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @tags.sideMenu_appMenu()
+        </div>
+        <div class="col-md-9">
+            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app.edit", app.getTitle())</h3>
+            @_frm_createOrEditApp(app, categories)
+        </div>
+    </div>
+</div>
+}

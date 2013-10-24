@@ -473,11 +473,12 @@ public class AsmDao extends BaseMysqlDao {
      */
     public static ApplicationBo create(ApplicationBo app) {
         final String[] COLUMNS = new String[] { "aid", "acategory_id", "aposition", "atitle",
-                "asummary" };
+                "aicon", "asummary" };
         final Object[] VALUES = new Object[] { app.getId(), app.getCategoryId(), app.getPosition(),
-                app.getTitle(), app.getSummary() };
+                app.getTitle(), app.getIcon(), app.getSummary() };
         insertIgnore(TABLE_APPLICATION, COLUMNS, VALUES);
         removeFromCache(cacheKey(app));
+        removeFromCache(cacheKeyAllApplications());
         return (ApplicationBo) app.markClean();
     }
 
@@ -491,6 +492,7 @@ public class AsmDao extends BaseMysqlDao {
         final Object[] VALUES = new Object[] { app.getId() };
         delete(TABLE_APPLICATION, COLUMNS, VALUES);
         removeFromCache(cacheKey(app));
+        removeFromCache(cacheKeyAllApplications());
     }
 
     /**
@@ -504,10 +506,10 @@ public class AsmDao extends BaseMysqlDao {
         final String CACHE_KEY = cacheKeyApplication(id);
         Map<String, Object> dbRow = getFromCache(CACHE_KEY, Map.class);
         if (dbRow == null) {
-            final String SQL_TEMPLATE = "SELECT aid AS {1}, acategory_id AS {2}, aposition AS {3}, atitle AS {4}, asummary AS {5} FROM {0} WHERE aid=?";
+            final String SQL_TEMPLATE = "SELECT aid AS {1}, acategory_id AS {2}, aposition AS {3}, atitle AS {4}, aicon AS {5}, asummary AS {6} FROM {0} WHERE aid=?";
             final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_APPLICATION,
                     ApplicationBo.COL_ID, ApplicationBo.COL_CAT_ID, ApplicationBo.COL_POSITION,
-                    ApplicationBo.COL_TITLE, ApplicationBo.COL_SUMMARY);
+                    ApplicationBo.COL_TITLE, ApplicationBo.COL_ICON, ApplicationBo.COL_SUMMARY);
             final Object[] WHERE_VALUES = new Object[] { id };
             List<Map<String, Object>> dbResult = select(SQL, WHERE_VALUES);
             dbRow = dbResult != null && dbResult.size() > 0 ? dbResult.get(0) : null;
@@ -555,10 +557,10 @@ public class AsmDao extends BaseMysqlDao {
     public static ApplicationBo update(ApplicationBo app) {
         if (app.isDirty()) {
             final String CACHE_KEY = cacheKey(app);
-            final String[] COLUMNS = new String[] { "acategory_id", "aposition", "atitle",
+            final String[] COLUMNS = new String[] { "acategory_id", "aposition", "atitle", "aicon",
                     "asummary" };
             final Object[] VALUES = new Object[] { app.getCategoryId(), app.getPosition(),
-                    app.getTitle(), app.getSummary() };
+                    app.getTitle(), app.getIcon(), app.getSummary() };
             final String[] WHERE_COLUMNS = new String[] { "aid" };
             final Object[] WHERE_VALUES = new Object[] { app.getId() };
             update(TABLE_APPLICATION, COLUMNS, VALUES, WHERE_COLUMNS, WHERE_VALUES);

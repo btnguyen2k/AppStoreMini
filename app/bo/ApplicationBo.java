@@ -8,6 +8,7 @@ public class ApplicationBo extends BaseBo {
     public final static String COL_CAT_ID = "cat_id";
     public final static String COL_POSITION = "app_position";
     public final static String COL_TITLE = "app_title";
+    public final static String COL_ICON = "app_icon";
     public final static String COL_SUMMARY = "app_summary";
 
     public String getId() {
@@ -40,6 +41,14 @@ public class ApplicationBo extends BaseBo {
 
     public ApplicationBo setTitle(String title) {
         return (ApplicationBo) setAttribute(COL_TITLE, title);
+    }
+
+    public String getIcon() {
+        return getAttribute(COL_ICON, String.class);
+    }
+
+    public ApplicationBo setIcon(String icon) {
+        return (ApplicationBo) setAttribute(COL_ICON, icon);
     }
 
     public String getSummary() {
