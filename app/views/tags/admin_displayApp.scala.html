@@ -1,0 +1,9 @@
+@(app: bo.ApplicationBo)
+<div class="col-md-6">
+    <span style="float: left; margin-right: 4px">@tags.displayIcon(app.getIcon(), 110)</span>
+    <strong>@app.getTitle()</strong>
+    <br/>
+    @if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}
+    <br />
+    <em style="font-size:small">@app.getSummary()</em>
+</div>

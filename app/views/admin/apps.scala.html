@@ -1,5 +1,4 @@
 @(msg: String, apps: Array[bo.ApplicationBo])
-
 @_layout(){
 <div class="container">
     <div class="row">
@@ -12,13 +11,28 @@
                     <p>@msg</p>
                 </div>
             }
+            @if(apps==null || apps.length==0){
+            } else {
+                @for(_i <- 0 until (apps.length+1)/2){
+                    <div class="row">
+                        @defining(_i*2){_j =>
+                            @defining(apps(_j)){app => @tags.admin_displayApp(app)}
+                            @if(_j+1 < apps.length){
+                                @defining(apps(_j+1)){app => @tags.admin_displayApp(app)}
+                            }
+                        }
+                    </div>
+                }
+            }
+            <div class="row">
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover table-condensed">
                     <thead>
                         <tr>
                             <th>@Messages("msg.app.title")</th>
                             <th style="text-align: center">@Messages("msg.app.category")</th>
-                            <th style="text-align: center">@Messages("msg.actions")</th>
+                            <th style="text-align: center; width: 100px">@Messages("msg.actions")</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,9 +48,17 @@
                             @for(app <- apps){
                                 <tr>
                                     <td>
+                                        <span style="float: left; margin-right: 4px">@tags.displayIcon(app.getIcon(), 110)</span>
                                         <strong>@app.getTitle()</strong>
+                                        <br/>
+                                        @if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}
+                                        <br />
+                                        <em style="font-size:small">@app.getSummary()</em>
                                     </td>
                                     <td>
+                                        @if(app.getCategory()!=null){
+                                            @app.getCategory().getTitle()
+                                        }
                                     </td>
                                     <td style="text-align: center; vertical-align: middle">
                                        <a href="@routes.AdminCp_App.editApp(app.getId())"><i class="glyphicon glyphicon-edit" style="color: blue; font-size: x-large" title="@Messages("msg.edit")"></i></a>

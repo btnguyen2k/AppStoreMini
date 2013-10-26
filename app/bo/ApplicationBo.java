@@ -23,6 +23,10 @@ public class ApplicationBo extends BaseBo {
         return getAttribute(COL_CAT_ID, String.class);
     }
 
+    public AppCategoryBo getCategory() {
+        return AsmDao.getAppCategory(getCategoryId());
+    }
+
     public ApplicationBo setCategoryId(String categoryId) {
         return (ApplicationBo) setAttribute(COL_CAT_ID, categoryId);
     }
