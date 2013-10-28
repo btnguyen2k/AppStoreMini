@@ -1,0 +1,50 @@
+@(app: bo.ApplicationBo, platform: bo.PlatformBo, appRelease: bo.AppReleaseBo, platforms: Array[bo.PlatformBo])
+@_layout(){
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @tags.sideMenu_appMenu()
+        </div>
+        <div class="col-md-9">
+            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app.release", app.getTitle())</h3>
+            <form role="form" method="post">
+                <div class="form-group">
+                    <label for="frm_platform">@Messages("msg.app.platform")</label>
+                    <select class="form-control" id="frm_platform" name="_platformId_">
+                        @if(platforms!=null && platforms.length > 0){
+                            @for(_platform <- platforms){
+                                <option value="@_platform.getId()" @if(platform!=null && platform.getId()==_platform.getId()){selected="selected"}>
+                                    @_platform.getTitle()
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+                
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="enabled" value="1"
+                            @if(appRelease!=null && appRelease.isEnabled){checked="checked"} /> @Messages("msg.app_release.isEnabled")
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="frm_urlDownload">@Messages("msg.app_release.urlDownload")</label>
+                    <input type="text" class="form-control" id="frm_urlDownload" name="urlDownload"
+                        value="@if(appRelease!=null){@tags.textOrEmpty(appRelease.getUrlDownload())}"
+                        placeholder="@Messages("msg.app_release.urlDownload")" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="frm_releaseNotes">@Messages("msg.app_release.releaseNotes")</label>
+                    <textarea class="form-control" id="frm_releaseNotes" name="releaseNotes" rows="6"
+                        placeholder="@Messages("msg.app_release.releaseNotes")">@if(appRelease!=null){@tags.textOrEmpty(appRelease.getReleaseNotes())}</textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">@Messages("msg.save")</button>
+                <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp_App.appList()'">@Messages("msg.cancel")</button>
+            </form>
+        </div>
+    </div>
+</div>
+}

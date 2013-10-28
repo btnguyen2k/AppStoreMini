@@ -13,7 +13,7 @@
             <option value=""></option>
             @if(categories!=null && categories.length > 0){
                 @for(category <- categories){
-                    <option value="@category.getId()">@category.getTitle()</option>
+                    <option value="@category.getId()" @if(app!=null && app.getCategoryId()==category.getId()){selected="selected"}>@category.getTitle()</option>
                 }
             }
         </select>

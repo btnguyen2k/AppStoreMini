@@ -6,8 +6,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Results;
 import bo.AppCategoryBo;
+import bo.AppReleaseBo;
 import bo.ApplicationBo;
 import bo.AsmDao;
+import bo.PlatformBo;
 
 import com.github.ddth.plommon.utils.IdGenerator;
 
@@ -94,5 +96,31 @@ public class AdminCp_App extends Controller {
             flash(FLASH_APP_LIST, msg);
             return Results.redirect(routes.AdminCp_App.appList());
         }
+    }
+
+    /*
+     * Handles GET:/admin/releaseApp
+     */
+    public static Result releaseApp(String appId, String platformId) {
+        ApplicationBo app = AsmDao.getApplication(appId);
+        PlatformBo platform = AsmDao.getPlatform(platformId);
+        PlatformBo[] allPlatforms = AsmDao.getAllPlatforms();
+        AppReleaseBo latestAppRelease = AsmDao.getLatestAppRelease(appId, platformId);
+        return Results.ok(views.html.admin.app_release.render(app, platform, latestAppRelease,
+                allPlatforms));
+    }
+
+    /*
+     * Handles POST:/admin/releaseApp
+     */
+    public static Result releaseAppSubmit(String appId, String platformId) {
+        IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
+        ApplicationBo application = Form.form(ApplicationBo.class).bindFromRequest().get();
+        application.setId(idGen.generateIdTinyHex());
+        application.setPosition((int) (System.currentTimeMillis() / 1000));
+        String msg = Messages.get("msg.app.create.done", application.getTitle());
+        flash(FLASH_APP_LIST, msg);
+        AsmDao.create(application);
+        return Results.redirect(routes.AdminCp_App.appList());
     }
 }

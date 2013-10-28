@@ -12,6 +12,9 @@
                 </div>
             }
             @if(apps==null || apps.length==0){
+                <div class="alert alert-warning">
+                    <p>@Messages("msg.nodata")</p>
+                </div>
             } else {
                 @for(_i <- 0 until (apps.length+1)/2){
                     <div class="row">
@@ -24,57 +27,6 @@
                     </div>
                 }
             }
-            <div class="row">
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover table-condensed">
-                    <thead>
-                        <tr>
-                            <th>@Messages("msg.app.title")</th>
-                            <th style="text-align: center">@Messages("msg.app.category")</th>
-                            <th style="text-align: center; width: 100px">@Messages("msg.actions")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(apps==null || apps.length==0){
-                            <tr>
-                                <td colspan="3">
-                                    <a class="btn btn-xs btn-primary" href="@routes.AdminCp_App.createApp()">@Messages("msg.app.create")</a>
-                                    |
-                                    @Messages("msg.nodata")
-                                </td>
-                            </tr>
-                        } else {
-                            @for(app <- apps){
-                                <tr>
-                                    <td>
-                                        <span style="float: left; margin-right: 4px">@tags.displayIcon(app.getIcon(), 110)</span>
-                                        <strong>@app.getTitle()</strong>
-                                        <br/>
-                                        @if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}
-                                        <br />
-                                        <em style="font-size:small">@app.getSummary()</em>
-                                    </td>
-                                    <td>
-                                        @if(app.getCategory()!=null){
-                                            @app.getCategory().getTitle()
-                                        }
-                                    </td>
-                                    <td style="text-align: center; vertical-align: middle">
-                                       <a href="@routes.AdminCp_App.editApp(app.getId())"><i class="glyphicon glyphicon-edit" style="color: blue; font-size: x-large" title="@Messages("msg.edit")"></i></a>
-                                       <a href="@routes.AdminCp_App.deleteApp(app.getId())"><i class="glyphicon glyphicon-remove" style="color: red; font-size: x-large" title="@Messages("msg.delete")"></i></a>
-                                   </td>
-                                </tr>
-                            }
-                            <tr>
-                                <td colspan="3">
-                                    <a class="btn btn-xs btn-primary" href="@routes.AdminCp_App.createApp()">@Messages("msg.app.create")</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 </div>

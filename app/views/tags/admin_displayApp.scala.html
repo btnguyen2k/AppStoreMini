@@ -5,5 +5,11 @@
     <br/>
     @if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}
     <br />
+    <a href="@routes.AdminCp_App.releaseApp(app.getId(), "")"><i class="glyphicon glyphicon-share" style="color: green; font-size: large" title="@Messages("msg.release")"></i></a>
+    &nbsp;
+    <a href="@routes.AdminCp_App.editApp(app.getId())"><i class="glyphicon glyphicon-edit" style="color: blue; font-size: large" title="@Messages("msg.edit")"></i></a>
+    <a href="@routes.AdminCp_App.deleteApp(app.getId())"><i class="glyphicon glyphicon-remove" style="color: red; font-size: large" title="@Messages("msg.delete")"></i></a>
+    <br />
     <em style="font-size:small">@app.getSummary()</em>
+    <br />
 </div>

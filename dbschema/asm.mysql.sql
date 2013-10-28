@@ -59,15 +59,15 @@ CREATE TABLE asm_app (
     PRIMARY KEY (aid)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
--- table to store application's platform releases
-DROP TABLE IF EXISTS asm_appplatform;
-CREATE TABLE asm_appplatform (
+-- table to store application's releases
+DROP TABLE IF EXISTS asm_app_release;
+CREATE TABLE asm_app_release (
     app_id                                  VARCHAR(32)         NOT NULL,
     platform_id                             VARCHAR(32)         NOT NULL,
-        PRIMARY KEY (app_id, platform_id),
-    apis_enabled                            TINYINT             NOT NULL DEFAULT 1,
-    apversion                               VARCHAR(32)         NOT NULL,
-    aptimestamp_release                     DATETIME            NOT NULL,
-    aprelease_notes                         TEXT,
-    apurl_download                          VARCHAR(255)
+    release_version                         VARCHAR(32)         NOT NULL,
+        PRIMARY KEY (app_id, platform_id, release_version),
+    is_enabled                              TINYINT             NOT NULL DEFAULT 1,
+    release_timestamp                       DATETIME            NOT NULL,
+    release_notes                           TEXT,
+    url_download                            VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
