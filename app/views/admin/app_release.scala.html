@@ -8,9 +8,34 @@
         <div class="col-md-9">
             <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app.release", app.getTitle())</h3>
             <form role="form" method="post">
+                <script type="text/javascript">
+                function _changePlatform(form) {
+                    var _appId = '@app.getId()';
+                    var _platformId = form.platformId.value;
+                    var _url = '/admin/latestRelease?app=' + _appId + '&platform=' + _platformId;
+                    
+                	$.get(_url, function(data) {
+                	    if ( data.status != 200 ) {
+                	        form.enabled.checked = false;
+                	        form.version.value = '';
+                	        form.urlDownload.value = '';
+                	        form.releaseNotes.value = '';
+                	    } else {
+                	        form.enabled.checked = data.message.enabled;
+                	        form.version.value = data.message.version;
+                            form.urlDownload.value = data.message.urlDownload;
+                            form.releaseNotes.value = data.message.releaseNotes;
+                	    }
+                	    console.log(data);
+                	}, 'json')
+                	.fail(function() {
+                	    alert('@Messages("error.ajax")');
+                    });
+                }
+                </script>
                 <div class="form-group">
-                    <label for="frm_platform">@Messages("msg.app.platform")</label>
-                    <select class="form-control" id="frm_platform" name="_platformId_">
+                    <select class="form-control" id="frm_platform" name="platformId" onchange="_changePlatform(this.form)">
+                        <option disabled="disabled" value="" selected="selected">-= @Messages("msg.app.platform") =-</option>
                         @if(platforms!=null && platforms.length > 0){
                             @for(_platform <- platforms){
                                 <option value="@_platform.getId()" @if(platform!=null && platform.getId()==_platform.getId()){selected="selected"}>
@@ -29,20 +54,33 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="frm_urlDownload">@Messages("msg.app_release.urlDownload")</label>
+                    <!-- <label for="frm_version">@Messages("msg.app_release.version")</label> -->
+                    <input type="text" class="form-control" id="frm_version" name="version"
+                        value="@if(appRelease!=null){@tags.textOrEmpty(appRelease.getVersion())}"
+                        placeholder="@Messages("msg.app_release.version")" />
+                </div>
+                
+                <div class="form-group">
+                    <!-- <label for="frm_urlDownload">@Messages("msg.app_release.urlDownload")</label> -->
                     <input type="text" class="form-control" id="frm_urlDownload" name="urlDownload"
                         value="@if(appRelease!=null){@tags.textOrEmpty(appRelease.getUrlDownload())}"
                         placeholder="@Messages("msg.app_release.urlDownload")" />
                 </div>
                 
                 <div class="form-group">
-                    <label for="frm_releaseNotes">@Messages("msg.app_release.releaseNotes")</label>
-                    <textarea class="form-control" id="frm_releaseNotes" name="releaseNotes" rows="6"
+                    <!-- <label for="frm_releaseNotes">@Messages("msg.app_release.releaseNotes")</label> -->
+                    <textarea class="form-control" id="frm_releaseNotes" name="releaseNotes" rows="4"
                         placeholder="@Messages("msg.app_release.releaseNotes")">@if(appRelease!=null){@tags.textOrEmpty(appRelease.getReleaseNotes())}</textarea>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">@Messages("msg.save")</button>
                 <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp_App.appList()'">@Messages("msg.cancel")</button>
+                <p>&nbsp;</p>
+                
+                <div class="form-group">
+                    <!-- <label for="frm_summary">@Messages("msg.app.summary")</label> -->
+                    <textarea class="form-control" id="frm_summary" name="summary" rows="6" readonly="readonly">@tags.textOrEmpty(app.getSummary())</textarea>
+                </div>
             </form>
         </div>
     </div>

@@ -2,6 +2,7 @@ package controllers;
 
 import play.data.Form;
 import play.i18n.Messages;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Results;
@@ -11,6 +12,9 @@ import bo.ApplicationBo;
 import bo.AsmDao;
 import bo.PlatformBo;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.ddth.plommon.utils.IdGenerator;
 
 public class AdminCp_App extends Controller {
@@ -96,6 +100,22 @@ public class AdminCp_App extends Controller {
             flash(FLASH_APP_LIST, msg);
             return Results.redirect(routes.AdminCp_App.appList());
         }
+    }
+
+    /*
+     * Handles: GET:/admin/latestRelease?app=xxx&platform=yyy
+     */
+    public static Result latestRelease(String appId, String platformId) {
+        AppReleaseBo latestAppRelease = AsmDao.getLatestAppRelease(appId, platformId);
+        ObjectNode result = Json.newObject();
+        if (latestAppRelease == null) {
+            result.put("status", 404);
+        } else {
+            result.put("status", 200);
+            ObjectMapper mapper = new ObjectMapper();
+            result.put("message", mapper.convertValue(latestAppRelease, JsonNode.class));
+        }
+        return ok(result);
     }
 
     /*
