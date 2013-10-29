@@ -1,4 +1,4 @@
-@(app: bo.ApplicationBo, platform: bo.PlatformBo, appRelease: bo.AppReleaseBo, platforms: Array[bo.PlatformBo])
+@(msg: String, app: bo.ApplicationBo, platform: bo.PlatformBo, appRelease: bo.AppReleaseBo, platforms: Array[bo.PlatformBo])
 @_layout(){
 <div class="container">
     <div class="row">
@@ -6,7 +6,12 @@
             @tags.sideMenu_appMenu()
         </div>
         <div class="col-md-9">
-            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app.release", app.getTitle())</h3>
+            @if(msg!=null) {
+                <div class="alert alert-danger">
+                    <p>@msg</p>
+                </div>
+            }
+            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.app_release", app.getTitle())</h3>
             <form role="form" method="post">
                 <script type="text/javascript">
                 function _changePlatform(form) {
@@ -35,7 +40,7 @@
                 </script>
                 <div class="form-group">
                     <select class="form-control" id="frm_platform" name="platformId" onchange="_changePlatform(this.form)">
-                        <option disabled="disabled" value="" selected="selected">-= @Messages("msg.app.platform") =-</option>
+                        <option disabled="disabled" value="" selected="selected">-= @Messages("msg.app_release.platform") =-</option>
                         @if(platforms!=null && platforms.length > 0){
                             @for(_platform <- platforms){
                                 <option value="@_platform.getId()" @if(platform!=null && platform.getId()==_platform.getId()){selected="selected"}>

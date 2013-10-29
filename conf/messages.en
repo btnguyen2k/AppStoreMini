@@ -54,4 +54,14 @@ msg.app.delete = Delete Application "{0}"
 msg.app.delete.confirmation = Are you really sure you wish to delete Application "{0}"?
 msg.app.delete.done = Application "{0}" has been deleted successfully!
 
-msg.copyright = Facebook Fanpage Tools. Brought to you by {0}
+msg.app_release = Release A Version
+msg.app_release.platform = Platform
+msg.app_release.isEnabled = Enabled
+msg.app_release.version = Version
+msg.app_release.urlDownload = Url Download
+msg.app_release.releaseNotes = Release Notes
+
+error.invalid.platform = Error: Invalid platform, please choose a valid one!
+error.invalid.version = Error: Invalid version number!
+
+msg.copyright = (C) 2013 by AppStore Mini

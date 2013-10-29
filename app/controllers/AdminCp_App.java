@@ -1,5 +1,7 @@
 package controllers;
 
+import org.apache.commons.lang3.StringUtils;
+
 import play.data.Form;
 import play.i18n.Messages;
 import play.libs.Json;
@@ -119,28 +121,64 @@ public class AdminCp_App extends Controller {
     }
 
     /*
-     * Handles GET:/admin/releaseApp
+     * Handles GET:/admin/releaseApp?app=xxx&platform=yyy
      */
     public static Result releaseApp(String appId, String platformId) {
         ApplicationBo app = AsmDao.getApplication(appId);
+        if (app == null) {
+            return null;
+        }
         PlatformBo platform = AsmDao.getPlatform(platformId);
         PlatformBo[] allPlatforms = AsmDao.getAllPlatforms();
         AppReleaseBo latestAppRelease = AsmDao.getLatestAppRelease(appId, platformId);
-        return Results.ok(views.html.admin.app_release.render(app, platform, latestAppRelease,
+        return Results.ok(views.html.admin.app_release.render(null, app, platform,
+                latestAppRelease, allPlatforms));
+    }
+
+    private static Result releaseAppSubmitError(String msg, ApplicationBo app, PlatformBo platform,
+            AppReleaseBo appRelease) {
+        PlatformBo[] allPlatforms = AsmDao.getAllPlatforms();
+        return Results.ok(views.html.admin.app_release.render(msg, app, platform, appRelease,
                 allPlatforms));
     }
 
     /*
-     * Handles POST:/admin/releaseApp
+     * Handles POST:/admin/releaseApp?app=xxx
      */
-    public static Result releaseAppSubmit(String appId, String platformId) {
-        IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
-        ApplicationBo application = Form.form(ApplicationBo.class).bindFromRequest().get();
-        application.setId(idGen.generateIdTinyHex());
-        application.setPosition((int) (System.currentTimeMillis() / 1000));
-        String msg = Messages.get("msg.app.create.done", application.getTitle());
-        flash(FLASH_APP_LIST, msg);
-        AsmDao.create(application);
-        return Results.redirect(routes.AdminCp_App.appList());
+    public static Result releaseAppSubmit(String appId) {
+        ApplicationBo app = AsmDao.getApplication(appId);
+        if (app == null) {
+            return null;
+        }
+        AppReleaseBo submittedAppRelease = Form.form(AppReleaseBo.class).bindFromRequest().get();
+
+        String platformId = submittedAppRelease.getPlatformId();
+        platformId = platformId != null ? platformId.trim() : null;
+        PlatformBo platform = AsmDao.getPlatform(platformId);
+        if (platform == null) {
+            return releaseAppSubmitError(Messages.get("error.invalid.platform"), app, platform,
+                    submittedAppRelease);
+        }
+
+        String version = submittedAppRelease.getVersion();
+        version = version != null ? version.trim() : null;
+        if (StringUtils.isBlank(version)) {
+            return releaseAppSubmitError(Messages.get("error.invalid.version"), app, platform,
+                    submittedAppRelease);
+        }
+
+        return releaseApp(appId, submittedAppRelease.getPlatformId());
+        //
+        // IdGenerator idGen =
+        // IdGenerator.getInstance(IdGenerator.getMacAddr());
+        // ApplicationBo application =
+        // Form.form(ApplicationBo.class).bindFromRequest().get();
+        // application.setId(idGen.generateIdTinyHex());
+        // application.setPosition((int) (System.currentTimeMillis() / 1000));
+        // String msg = Messages.get("msg.app.create.done",
+        // application.getTitle());
+        // flash(FLASH_APP_LIST, msg);
+        // AsmDao.create(application);
+        // return Results.redirect(routes.AdminCp_App.appList());
     }
 }

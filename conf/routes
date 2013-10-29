@@ -16,7 +16,7 @@ POST    /admin/editApp              controllers.AdminCp_App.editAppSubmit(id: St
 GET     /admin/deleteApp            controllers.AdminCp_App.deleteApp(id: String)
 POST    /admin/deleteApp            controllers.AdminCp_App.deleteAppSubmit(id: String)
 GET     /admin/releaseApp           controllers.AdminCp_App.releaseApp(app: String, platform: String)
-POST    /admin/releaseApp           controllers.AdminCp_App.releaseAppSubmit(app: String, platform: String)
+POST    /admin/releaseApp           controllers.AdminCp_App.releaseAppSubmit(app: String)
 GET     /admin/latestRelease        controllers.AdminCp_App.latestRelease(app: String, platform: String)
 
 GET     /admin/platforms            controllers.AdminCp_Platform.platformList()
