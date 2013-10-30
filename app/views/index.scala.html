@@ -1,6 +1,6 @@
 @(apps: Array[bo.ApplicationBo])
-@_layout(){
-    <div class="container col-md-12 col-md-offset-0">
+@_layout("home"){
+    <div class="container col-md-12 col-md-offset-1">
         @if(apps.length < 4){
             @tags.displayAppList(apps, apps.length)    
         } else {

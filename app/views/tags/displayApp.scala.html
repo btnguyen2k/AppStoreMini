@@ -1,7 +1,7 @@
 @(app: bo.ApplicationBo, clazz: Integer)
 <div class="col-md-@clazz">
     <span style="float: left; margin-right: 4px;">@tags.displayIcon(app.getIcon(), 100)</span>
-    <strong><a href="">@app.getTitle()</a></strong>
+    <strong><a href="@routes.Application.viewApp(app.getId())">@app.getTitle()</a></strong>
     <div style="margin-top: -2px"></div>
     <small>@if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}</small>
     <div style="margin-top: 2px"></div>
@@ -13,5 +13,5 @@
 	    }
 	}
     <div style="margin-top: 10px"></div>
-    <a class="btn btn-primary btn-xs" href="">@Messages("msg.details")</a>
+    <a class="btn btn-primary btn-xs" href="@routes.Application.viewApp(app.getId())">@Messages("msg.details")</a>
 </div>

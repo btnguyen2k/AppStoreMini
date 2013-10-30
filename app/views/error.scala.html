@@ -1,0 +1,10 @@
+@(msg: String, url: String)
+@_layout(){
+    <div class="alert alert-danger col-lg-8 col-lg-offset-2">
+        <span style="float: left; margin-right: 8px"><i class="glyphicon glyphicon-ban-circle" style="font-size: xx-large; color: red"></i></span>
+        <p>@msg</p>
+        @if(url!=null && url!=""){
+            <p style="font-size: small"><a href="@url">@Messages("msg.next")</a></p>
+        }
+    </div>
+}

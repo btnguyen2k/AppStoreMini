@@ -1,4 +1,4 @@
-@(customJs: Array[String] = Array(), customCss: Array[String] = Array())(content: Html)
+@(active: String = "", customJs: Array[String] = Array(), customCss: Array[String] = Array())(content: Html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,9 +34,11 @@
 	        <!-- Collect the nav links, forms, and other content for toggling -->
 	        <div class="collapse navbar-collapse navbar-ex1-collapse">
 	            <ul class="nav navbar-nav">
-	                <li class="active"><a href="@routes.Application.index()" title="@Messages("msg.home")"
+	                <li @if(active==null||active==""||active=="home"||active=="index"){class="active"}><a 
+	                    href="@routes.Application.index()" title="@Messages("msg.home")"
 	                    ><i class="glyphicon glyphicon-home"></i> @Messages("msg.home")</a></li>
-	                <li><a href="@routes.Application.index()" title="@Messages("msg.home")"
+	                <li @if(active=="app"){class="active"}><a href="@routes.Application.index()"
+	                    title="@Messages("msg.apps")"
 	                    ><i class="glyphicon glyphicon-list"></i> @Messages("msg.apps")</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">

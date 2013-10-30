@@ -6,6 +6,7 @@ error.login = Error: Login failed! Login name and/or password mismatched.
 msg.details = View Details
 msg.commingSoon = Comming Soon
 
+msg.next = Next
 msg.save = Save
 msg.cancel = Cancel
 msg.ok = Ok
@@ -59,6 +60,12 @@ msg.app.delete = Delete Application "{0}"
 msg.app.delete.confirmation = Are you really sure you wish to delete Application "{0}"?
 msg.app.delete.done = Application "{0}" has been deleted successfully!
 
+msg.app.title = Title
+msg.app.summary = Summary
+msg.app.icon = Icon
+msg.app.category = Category
+msg.app.platforms = Platforms
+
 msg.app_release = Release A Version
 msg.app_release.done = Version "{2}" of "{0}" on platform "{1}" has been released or updated successfully.
 msg.app_release.platform = Platform
@@ -69,5 +76,7 @@ msg.app_release.releaseNotes = Release Notes
 
 error.invalid.platform = Error: Invalid platform, please choose a valid one!
 error.invalid.version = Error: Invalid version number!
+
+error.404.app = Error: App not found!
 
 msg.copyright = (C) 2013 by AppStore Mini

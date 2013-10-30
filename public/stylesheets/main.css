@@ -25,3 +25,10 @@ body {
   color: #000000;
   /* background-color: #f5f5f5; */
 }
+
+.heading-title {
+	border-bottom: 1px solid #808080;
+}
+h1.heading-title, h2.heading-title, h3.heading-title {
+	margin-top: 0px
+}

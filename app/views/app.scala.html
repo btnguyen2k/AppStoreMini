@@ -1,0 +1,72 @@
+@(app: bo.ApplicationBo)
+@_layout("app"){
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="@routes.Application.index()">@Messages("msg.home")</a></li>
+            <li><a href="@routes.Application.index()">@Messages("msg.apps")</a></li>
+            <li class="active">@app.getTitle()</li>
+        </ol>
+    </div>
+    
+    <div class="container">
+	    <div class="row">
+	        <div class="col-md-4">
+		        <div class="panel panel-primary">
+		            <!-- <div class="panel-heading">@app.getTitle()</div> -->
+		            <div class="panel-body">
+		                <span style="float: left; position: relative">@tags.displayIcon(app.getIcon(), 100)</span>
+		                <!--
+		                <span style="display: block; font-weight: bold; font-size: x-large">
+		                    @app.getTitle()
+		                </span>
+		                -->
+		                <span style="display: block; font-style: italic; font-size: small;">
+		                    @if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}
+		                </span>
+		                <span style="display: block; font-style: italic; font-size: small; margin-top: 4px">
+		                    @for(appRelease <- app.getLatestReleases()){
+		                        <span title="@appRelease.getPlatform().getTitle()" href="#" 
+		                            class="btn btn-default btn-sm">@tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)<span style="vertical-align:text-top;"> @appRelease.getVersion()</span></span>
+		                    }
+		                </span>
+		                <span style="display: block; margin-top: 4px">
+							<!-- AddThis Button BEGIN -->
+							<!--
+							<div class="addthis_toolbox addthis_default_style">
+								<a class="addthis_button_preferred_1"></a>
+								<a class="addthis_button_preferred_2"></a>
+								<a class="addthis_button_preferred_3"></a>
+								<a class="addthis_button_preferred_4"></a>
+								<a class="addthis_button_compact"></a>
+								<a class="addthis_counter addthis_bubble_style"></a>
+							</div>
+							-->
+							<div class="addthis_toolbox addthis_default_style" style="margin-top: 14px;">
+                                <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                                <a class="addthis_button_preferred_1"></a>
+                                <a class="addthis_button_preferred_2"></a>
+                                <!-- <a class="addthis_button_preferred_3"></a> -->
+                                <!-- <a class="addthis_button_preferred_4"></a> -->
+                                <!-- <a class="addthis_button_tweet"></a> -->
+                                <!-- <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a> -->
+                                <!-- <a class="addthis_counter addthis_pill_style"></a> -->
+                                <a class="addthis_button_compact"></a>
+                                <a class="addthis_counter addthis_bubble_style"></a>
+                            </div>
+							<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+							<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=<your_addthis_id>"></script>
+							<!-- AddThis Button END -->
+		                </span>
+		            </div>
+		        </div>
+	            
+	        </div>
+	        <div class="col-md-8">
+	            <h3 class="heading-title">@app.getTitle()</h3>
+	            <div>
+	               @app.getSummary()
+	            </div>
+	        </div>
+	    </div>
+	</div>
+}
