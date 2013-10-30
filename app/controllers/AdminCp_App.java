@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 
 import play.data.Form;
@@ -167,18 +169,25 @@ public class AdminCp_App extends Controller {
                     submittedAppRelease);
         }
 
-        return releaseApp(appId, submittedAppRelease.getPlatformId());
-        //
-        // IdGenerator idGen =
-        // IdGenerator.getInstance(IdGenerator.getMacAddr());
-        // ApplicationBo application =
-        // Form.form(ApplicationBo.class).bindFromRequest().get();
-        // application.setId(idGen.generateIdTinyHex());
-        // application.setPosition((int) (System.currentTimeMillis() / 1000));
-        // String msg = Messages.get("msg.app.create.done",
-        // application.getTitle());
-        // flash(FLASH_APP_LIST, msg);
-        // AsmDao.create(application);
-        // return Results.redirect(routes.AdminCp_App.appList());
+        AppReleaseBo exitingAppRelease = AsmDao.getAppRelease(appId, platformId, version);
+        if (exitingAppRelease == null) {
+            submittedAppRelease.setAppId(appId);
+            submittedAppRelease.setTimestamp(new Date());
+            submittedAppRelease = AsmDao.create(submittedAppRelease);
+            String msg = Messages.get("msg.app_release.done", app.getTitle(), platform.getTitle(),
+                    version);
+            flash(FLASH_APP_LIST, msg);
+            return Results.redirect(routes.AdminCp_App.appList());
+
+        } else {
+            exitingAppRelease.setEnabled(submittedAppRelease.isEnabled());
+            exitingAppRelease.setUrlDownload(submittedAppRelease.getUrlDownload());
+            exitingAppRelease.setReleaseNotes(submittedAppRelease.getReleaseNotes());
+            exitingAppRelease = AsmDao.update(exitingAppRelease);
+            String msg = Messages.get("msg.app_release.done", app.getTitle(), platform.getTitle(),
+                    version);
+            flash(FLASH_APP_LIST, msg);
+            return Results.redirect(routes.AdminCp_App.appList());
+        }
     }
 }

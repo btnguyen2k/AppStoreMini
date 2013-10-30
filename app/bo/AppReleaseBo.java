@@ -16,6 +16,10 @@ public class AppReleaseBo extends BaseBo {
 
     private final static Integer INT_0 = Integer.valueOf(0), INT_1 = Integer.valueOf(1);
 
+    public PlatformBo getPlatform() {
+        return AsmDao.getPlatform(getPlatformId());
+    }
+
     public String getAppId() {
         return getAttribute(COL_APP_ID, String.class);
     }

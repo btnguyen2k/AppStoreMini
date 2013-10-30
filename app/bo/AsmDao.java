@@ -18,8 +18,7 @@ public class AsmDao extends BaseMysqlDao {
     public final static String TABLE_APP_RELEASE = "asm_app_release";
 
     private final static ApplicationBo[] EMPTY_ARR_APPLICATION_BO = new ApplicationBo[0];
-    // private final static AppPlatformBo[] EMPTY_ARR_APP_PLATFORM_BO = new
-    // AppPlatformBo[0];
+    private final static AppReleaseBo[] EMPTY_ARR_APP_RELEASE_BO = new AppReleaseBo[0];
     private final static PlatformBo[] EMPTY_ARR_PLATFORM_BO = new PlatformBo[0];
     private final static AppCategoryBo[] EMPTY_ARR_APP_CATEGORY_BO = new AppCategoryBo[0];
 
@@ -674,6 +673,26 @@ public class AsmDao extends BaseMysqlDao {
             putToCache(CACHE_KEY, dbRow);
         }
         return dbRow != null ? (AppReleaseBo) new AppReleaseBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Gets app's latest releases per each platform.
+     * 
+     * @param appId
+     * @return
+     */
+    public static AppReleaseBo[] getLatestReleasesPerPlatform(String appId) {
+        List<AppReleaseBo> result = new ArrayList<AppReleaseBo>();
+        PlatformBo[] allPlatforms = getAllPlatforms();
+        if (allPlatforms != null && allPlatforms.length > 0) {
+            for (PlatformBo platform : allPlatforms) {
+                AppReleaseBo latestRelease = getLatestAppRelease(appId, platform.getId());
+                if (latestRelease != null) {
+                    result.add(latestRelease);
+                }
+            }
+        }
+        return result.toArray(EMPTY_ARR_APP_RELEASE_BO);
     }
 
     // /**

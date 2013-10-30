@@ -11,6 +11,10 @@ public class ApplicationBo extends BaseBo {
     public final static String COL_ICON = "app_icon";
     public final static String COL_SUMMARY = "app_summary";
 
+    public AppReleaseBo[] getLatestReleases() {
+        return AsmDao.getLatestReleasesPerPlatform(getId());
+    }
+
     public String getId() {
         return getAttribute(COL_ID, String.class);
     }

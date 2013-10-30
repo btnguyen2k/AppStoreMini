@@ -55,6 +55,7 @@ msg.app.delete.confirmation = Are you really sure you wish to delete Application
 msg.app.delete.done = Application "{0}" has been deleted successfully!
 
 msg.app_release = Release A Version
+msg.app_release.done = Version "{2}" of "{0}" on platform "{1}" has been released or updated successfully.
 msg.app_release.platform = Platform
 msg.app_release.isEnabled = Enabled
 msg.app_release.version = Version
