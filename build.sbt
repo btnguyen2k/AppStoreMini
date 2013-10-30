@@ -8,6 +8,7 @@ libraryDependencies ++= Seq(
   "com.typesafe" %% "play-plugins-redis" % "2.1.1",
   "com.github.ddth" %% "play-module-plommon" % "0.3.2-SNAPSHOT",
   "org.apache.directory.studio" % "org.apache.commons.codec" % "1.8",
+  "net.glxn" % "qrgen" % "1.3",
   javaJdbc,
   javaEbean,
   cache
