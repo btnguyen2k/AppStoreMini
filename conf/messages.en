@@ -1,6 +1,8 @@
+msg.home = Home
 msg.logout = Logout
 msg.login = Login
 error.login = Error: Login failed! Login name and/or password mismatched.
+
 msg.save = Save
 msg.cancel = Cancel
 msg.ok = Ok

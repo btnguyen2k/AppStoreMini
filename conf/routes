@@ -40,7 +40,7 @@ GET     /admin/moveDownAppCategory  controllers.AdminCp_Category.moveDownAppCate
 GET     /admin/                     controllers.Application.appRedirect(url="/admin/index")
 GET     /admin                      controllers.Application.appRedirect(url="/admin/index")
 
-#GET     /                           controllers.Application.index()
+GET     /                           controllers.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

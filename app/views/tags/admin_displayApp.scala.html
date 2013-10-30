@@ -1,22 +1,20 @@
 @(app: bo.ApplicationBo)
 <div class="col-md-6">
-    <span style="float: left; margin-right: 4px; margin-top: 4px">@tags.displayIcon(app.getIcon(), 110)</span>
+    <span style="float: left; margin-right: 4px;">@tags.displayIcon(app.getIcon(), 110)</span>
     <strong>@app.getTitle()</strong>
     <br/>
-    @if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}
-    <br />
+    <small>@if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}</small>
+    <div style="margin-top: 4px"></div>
     <div class="btn-group">
-        <a href="@routes.AdminCp_App.releaseApp(app.getId(), "")"><i class="glyphicon glyphicon-share" style="color: green; font-size: large" title="@Messages("msg.release")"></i></a>
+        <a href="@routes.AdminCp_App.releaseApp(app.getId(), "")"><i class="glyphicon glyphicon-share" style="color: green; font-size: large" title="@Messages("msg.app_release")"></i></a>
     </div>
     @for(appRelease <- app.getLatestReleases()){
-        <div class="btn-group">
-            <button title="@appRelease.getPlatform().getTitle()" type="button" class="btn btn-default btn-xs" disabled="disabled">@tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)</button>
-            <a title="@appRelease.getPlatform().getTitle()" href="@routes.AdminCp_App.releaseApp(app.getId(), appRelease.getPlatformId())" class="btn btn-default btn-xs">@appRelease.getVersion()</a>
-        </div>         
+        <a title="@appRelease.getPlatform().getTitle()" href="@routes.AdminCp_App.releaseApp(app.getId(), appRelease.getPlatformId())"
+            class="btn btn-default btn-xs">@tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)<span style="vertical-align:text-top;"> @appRelease.getVersion()</span></a>
     }
-    <br /><br />
+    <div style="margin-top: 12px"></div>
     <a href="@routes.AdminCp_App.editApp(app.getId())" class="btn btn-default btn-primary btn-sm"><i class="glyphicon glyphicon-edit" title="@Messages("msg.edit")"></i> @Messages("msg.edit")</a>
     <a href="@routes.AdminCp_App.deleteApp(app.getId())" class="btn btn-default btn-danger btn-sm"><i class="glyphicon glyphicon-remove" title="@Messages("msg.delete")"></i> @Messages("msg.delete")</a>
-    <br /><br />
+    <div style="margin-top: 4px"></div>
     <em style="font-size:small">@app.getSummary()</em>
 </div>

@@ -71,3 +71,13 @@ CREATE TABLE asm_app_release (
     release_notes                           TEXT,
     url_download                            VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+-- table to store html pages
+DROP TABLE IF EXISTS asm_page;
+CREATE TABLE asm_page (
+    page_id                                 VARCHAR(16),
+    page_title                              VARCHAR(40),
+    page_content                            TEXT,
+    
+    PRIMARY KEY (page_id)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;

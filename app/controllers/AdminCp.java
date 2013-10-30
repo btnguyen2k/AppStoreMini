@@ -11,8 +11,6 @@ import bo.UserBo;
 
 public class AdminCp extends Controller {
 
-    private final static String FLASH_APP_LIST = "app_list";
-
     /*
      * Handles GET:/admin/index
      */
