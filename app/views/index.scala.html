@@ -1,15 +1,10 @@
 @(apps: Array[bo.ApplicationBo])
 @_layout(){
-    <div class="container col-md-12">
-        @for(_i <- 0 until (apps.length+1)/2){
-            <div class="row">
-               @defining(_i*2){_j =>
-                   @defining(apps(_j)){app => @tags.admin_displayApp(app)}
-                   @if(_j+1 < apps.length){
-                       @defining(apps(_j+1)){app => @tags.admin_displayApp(app)}
-                    }
-                }
-            </div>
+    <div class="container col-md-12 col-md-offset-0">
+        @if(apps.length < 4){
+            @tags.displayAppList(apps, apps.length)    
+        } else {
+            @tags.displayAppList(apps, 4)
         }
     </div>
 }

@@ -3,6 +3,9 @@ msg.logout = Logout
 msg.login = Login
 error.login = Error: Login failed! Login name and/or password mismatched.
 
+msg.details = View Details
+msg.commingSoon = Comming Soon
+
 msg.save = Save
 msg.cancel = Cancel
 msg.ok = Ok

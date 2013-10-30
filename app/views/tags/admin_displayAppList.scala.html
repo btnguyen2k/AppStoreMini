@@ -1,0 +1,13 @@
+@(apps: Array[bo.ApplicationBo], numCols: Integer)
+@for(_i <- 0 until (apps.length+1)/numCols){
+    <div class="row">
+        @for(_j <- 0 until numCols){
+            @defining(_i*numCols + _j){_k =>
+                @if(_k < apps.length){
+                    @defining(apps(_k)){_app => @tags.admin_displayApp(_app, 12/numCols)}
+                }
+            }
+        }
+    </div>
+    <div style="margin-top: 8px"></div>
+}
