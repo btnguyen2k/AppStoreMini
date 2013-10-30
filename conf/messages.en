@@ -5,6 +5,7 @@ error.login = Error: Login failed! Login name and/or password mismatched.
 
 msg.details = View Details
 msg.commingSoon = Comming Soon
+msg.download = Download
 
 msg.next = Next
 msg.save = Save

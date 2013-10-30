@@ -1,9 +1,14 @@
 package controllers;
 
+import java.io.ByteArrayOutputStream;
+
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Results;
+import bo.AppReleaseBo;
 import bo.ApplicationBo;
 import bo.AsmDao;
 
@@ -37,5 +42,16 @@ public class Application extends Controller {
                     .index().url()));
         }
         return ok(views.html.app.render(app));
+    }
+
+    public static Result qrcode(String appId, String platformId, int size) {
+        AppReleaseBo appRelease = AsmDao.getLatestAppRelease(appId, platformId);
+        if (appRelease == null) {
+            return null;
+        }
+        response().setContentType("image/jpg");
+        ByteArrayOutputStream baos = QRCode.from(appRelease.getUrlDownload()).to(ImageType.JPG)
+                .withSize(size, size).stream();
+        return ok(baos.toByteArray());
     }
 }

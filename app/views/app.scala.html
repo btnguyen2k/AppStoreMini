@@ -60,6 +60,21 @@
                     </div>
                 </div>
                 
+                @for(appRelease <- app.getLatestReleases()){
+	                <div class="panel panel-success">
+	                    <div class="panel-heading">
+	                        @tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)
+                            <span style="vertical-align:text-top;">@Messages("msg.app_release.version"):</span>
+                            <span style="vertical-align:text-top;">@appRelease.getVersion()</span>
+                            <a href="@appRelease.getUrlDownload()" target="_blank" class="btn btn-success btn-sm">
+                                @Messages("msg.download")
+                            </a>
+	                    </div>
+	                    <div class="panel-body" style="text-align: center">
+	                       <img src="@routes.Application.qrcode(appRelease.getAppId(), appRelease.getPlatformId(), 150)" />
+	                    </div>
+	                </div>
+	            }
             </div>
             <div class="col-md-8">
                 <h3 class="heading-title">@app.getTitle()</h3>
@@ -75,10 +90,15 @@
                             <span style="vertical-align:text-top;">@appRelease.getVersion()</span>
                         </div>
                         <div class="panel-body">
-                            @appRelease.getReleaseNotes()
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top"><img src="@routes.Application.qrcode(appRelease.getAppId(), appRelease.getPlatformId(), 80)" /></td>
+                                    <td style="padding-top: 10px; vertical-align: top">@appRelease.getReleaseNotes()</td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="panel-footer">
-                            <a href="@appRelease.getUrlDownload()" target="_blank">@appRelease.getUrlDownload()</a>
+                            @Messages("msg.app_release.urlDownload"): <a href="@appRelease.getUrlDownload()" target="_blank">@appRelease.getUrlDownload()</a>
                         </div>
                     </div>
                 }
