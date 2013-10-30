@@ -82,7 +82,10 @@
                    @app.getSummary()
                 </div>
                 <p>&nbsp;</p>
+                
+                <div class="row">
                 @for(appRelease <- app.getLatestReleases()){
+                    <div class="col-md-6">
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             @tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)
@@ -101,7 +104,9 @@
                             @Messages("msg.app_release.urlDownload"): <a href="@appRelease.getUrlDownload()" target="_blank">@appRelease.getUrlDownload()</a>
                         </div>
                     </div>
+                    </div>
                 }
+                </div>
             </div>
         </div>
     </div>
