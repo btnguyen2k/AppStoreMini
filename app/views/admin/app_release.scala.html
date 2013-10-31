@@ -43,7 +43,9 @@
                         <option disabled="disabled" value="" selected="selected">-= @Messages("msg.app_release.platform") =-</option>
                         @if(platforms!=null && platforms.length > 0){
                             @for(_platform <- platforms){
-                                <option value="@_platform.getId()" @if(platform!=null && platform.getId()==_platform.getId()){selected="selected"}>
+                                <option value="@_platform.getId()"
+                                        @if(platform!=null && platform.getId()==_platform.getId()){selected="selected"}
+                                        @if(!_platform.isEnabled()){disabled="disabled"}>
                                     @_platform.getTitle()
                                 </option>
                             }
