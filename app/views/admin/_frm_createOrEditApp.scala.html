@@ -21,7 +21,36 @@
     
     <div class="form-group">
         <label for="frm_summary">@Messages("msg.app.summary")</label>
-        <textarea class="form-control" rows="6" name="summary">@if(app!=null){@tags.textOrEmpty(app.getSummary())}</textarea>
+        <textarea class="form-control" rows="8" name="summary" id="frm_summary" style="width: 100%">@if(app!=null){@tags.textOrEmpty(app.getSummary())}</textarea>
+        <!--
+        <script type="text/javascript" src="@routes.Assets.at("tinymce-4.0.10/js/tinymce/tinymce.min.js")"></script>
+        <script type="text/javascript">
+        tinymce.init({
+            selector: "#frm_summary"
+         });
+        </script>
+        -->
+        <style type="text/css">
+        /* fix style conflict with bootstrap */
+        .sceditor-button {width: 26px !important; height: 26px !important;}
+        </style>
+        <link rel="stylesheet" href="@routes.Assets.at("sceditor-1.4.4/minified/themes/default.min.css")" type="text/css" media="all" />
+        <script type="text/javascript" src="@routes.Assets.at("sceditor-1.4.4/minified/jquery.sceditor.min.js")"></script>
+        <script type="text/javascript">
+        $(function() {
+            $("#frm_summary").sceditor({
+                //plugins: "xhtml",
+                //toolbar: "bold,italic,underline|source",
+                toolbarExclude: "print,rtl,ltr,date,time,subscript,superscript,justify,font,cut,copy,paste,pastetext",
+                
+                emoticonsEnabled: true,
+                emoticonsCompat : true,
+                emoticonsRoot   : "@routes.Assets.at("sceditor-1.4.4/")",
+                
+                style: "@routes.Assets.at("sceditor-1.4.4/minified/jquery.sceditor.default.min.css")"
+            });
+        });
+        </script>
     </div>
     
     <table class="table table-condensed">
