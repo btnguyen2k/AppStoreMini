@@ -11,13 +11,41 @@
                     <p>@msg</p>
                 </div>
             }
-            @if(apps==null || apps.length==0){
-                <div class="alert alert-warning">
-                    <p>@Messages("msg.nodata")</p>
-                </div>
-            } else {
-                @tags.admin_displayAppList(apps, 2)
-            }
+            <div class="panel panel-success">
+                <div class="panel-heading">@Messages("msg.apps")</div>
+                @if(apps==null || apps.length==0){
+                    <div class="panel-body">                
+                        <p>@Messages("msg.nodata")</p>
+                    </div>
+                } else {
+                    <table class="table">
+	                    @for(app <- apps){
+	                        <tr>
+	                            <td style="width: 108px; text-align: center">@tags.displayIcon(app.getIcon(), 100)</td>
+	                            <td style="width: 164px;">
+								    <strong>@app.getTitle()</strong>
+								    <div style="margin-top: -2px"></div>
+								    <small>@if(app.getCategory()!=null){@app.getCategory().getTitle()}else{&nbsp;}</small>
+								    <div style="margin-top: 2px"></div>
+								    <div class="btn-group">
+								        <a href="@routes.AdminCp_App.releaseApp(app.getId(), "")"><i class="glyphicon glyphicon-share" style="color: green; font-size: large" title="@Messages("msg.app_release")"></i></a>
+								    </div>
+								    @for(appRelease <- app.getLatestReleases()){
+								        <a title="@appRelease.getPlatform().getTitle()" href="@routes.AdminCp_App.releaseApp(app.getId(), appRelease.getPlatformId())"
+								            class="btn btn-default btn-xs">@tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)<span style="vertical-align:text-top;"> @appRelease.getVersion()</span></a>
+								    }
+								    <div style="margin-top: 10px"></div>
+								    <a href="@routes.AdminCp_App.editApp(app.getId())" class="btn btn-default btn-primary btn-xs"><i class="glyphicon glyphicon-edit" title="@Messages("msg.edit")"></i> @Messages("msg.edit")</a>
+								    <a href="@routes.AdminCp_App.deleteApp(app.getId())" class="btn btn-default btn-danger btn-xs"><i class="glyphicon glyphicon-remove" title="@Messages("msg.delete")"></i> @Messages("msg.delete")</a>
+	                             </td>
+	                            <td>
+	                                @Html(app.getSummary())
+	                            </td>
+	                        </tr>
+	                    }
+                    </table>
+                }
+            </div>
         </div>
     </div>
 </div>
