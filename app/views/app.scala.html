@@ -61,20 +61,20 @@
                 </div>
                 
                 @for(appRelease <- app.getLatestReleases()){
-	                <div class="panel panel-success">
-	                    <div class="panel-heading">
-	                        @tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            @tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)
                             <span style="vertical-align:text-top;">@Messages("msg.app_release.version"):</span>
                             <span style="vertical-align:text-top;">@appRelease.getVersion()</span>
                             <a href="@appRelease.getUrlDownload()" target="_blank" class="btn btn-success btn-sm">
                                 @Messages("msg.download")
                             </a>
-	                    </div>
-	                    <div class="panel-body" style="text-align: center">
-	                       <img src="@routes.Application.qrcode(appRelease.getAppId(), appRelease.getPlatformId(), 150)" />
-	                    </div>
-	                </div>
-	            }
+                        </div>
+                        <div class="panel-body" style="text-align: center">
+                           <img src="@routes.Application.qrcode(appRelease.getAppId(), appRelease.getPlatformId(), 150)" />
+                        </div>
+                    </div>
+                }
             </div>
             <div class="col-md-8">
                 <h3 class="heading-title">@app.getTitle()</h3>
@@ -83,30 +83,41 @@
                 </div>
                 <p>&nbsp;</p>
                 
-                <div class="row">
-                @for(appRelease <- app.getLatestReleases()){
-                    <div class="col-md-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            @tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)
-                            <span style="vertical-align:text-top;">@Messages("msg.app_release.version"):</span>
-                            <span style="vertical-align:text-top;">@appRelease.getVersion()</span>
+                @defining(app.getLatestReleases()){_releases =>
+                    @for(_i <- 0 until (_releases.length+1)/2){
+                        <div class="row">
+                           @defining(_i * 2){_j =>
+                               @if(_j < _releases.length){
+                                   @defining(_releases(_j)){appRelease =>
+                                       <div class="col-md-6">
+                                           <div class="panel panel-info">
+                                               <div class="panel-heading">
+                                                   @tags.displayIcon(appRelease.getPlatform().getIcon16(), 16)
+                                                   <span style="vertical-align:text-top;">@Messages("msg.app_release.version"):</span>
+                                                   <span style="vertical-align:text-top;">@appRelease.getVersion()</span>
+                                               </div>
+                                               <div class="panel-body">
+                                                   <table>
+                                                       <tr>
+                                                           <td style="vertical-align: top"><img src="@routes.Application.qrcode(appRelease.getAppId(), appRelease.getPlatformId(), 80)" /></td>
+                                                           <td style="padding-top: 10px; vertical-align: top">
+                                                               <span style="font-size: small">[ @appRelease.getTimestamp().format("dd MMM yyyy") ]</span>
+                                                               <br />
+                                                               @appRelease.getReleaseNotes()
+                                                               <br />
+                                                               <a class="btn btn-info btn-sm" href="@appRelease.getUrlDownload()" target="_blank">@Messages("msg.download")</a>
+                                                           </td>
+                                                       </tr>
+                                                   </table>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   }
+                               }
+                           }
                         </div>
-                        <div class="panel-body">
-                            <table>
-                                <tr>
-                                    <td style="vertical-align: top"><img src="@routes.Application.qrcode(appRelease.getAppId(), appRelease.getPlatformId(), 80)" /></td>
-                                    <td style="padding-top: 10px; vertical-align: top">@appRelease.getReleaseNotes()</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-footer">
-                            @Messages("msg.app_release.urlDownload"): <a href="@appRelease.getUrlDownload()" target="_blank">@appRelease.getUrlDownload()</a>
-                        </div>
-                    </div>
-                    </div>
+                    }
                 }
-                </div>
             </div>
         </div>
     </div>

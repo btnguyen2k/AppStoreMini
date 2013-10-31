@@ -2,6 +2,8 @@ package bo;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -691,6 +693,12 @@ public class AsmDao extends BaseMysqlDao {
                     result.add(latestRelease);
                 }
             }
+            Collections.sort(result, new Comparator<AppReleaseBo>() {
+                @Override
+                public int compare(AppReleaseBo o1, AppReleaseBo o2) {
+                    return o2.getTimestamp().compareTo(o1.getTimestamp());
+                }
+            });
         }
         return result.toArray(EMPTY_ARR_APP_RELEASE_BO);
     }
