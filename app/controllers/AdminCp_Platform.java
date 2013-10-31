@@ -9,6 +9,7 @@ import bo.AsmDao;
 import bo.PlatformBo;
 
 import com.github.ddth.plommon.utils.IdGenerator;
+import compositions.AuthRequired;
 
 public class AdminCp_Platform extends Controller {
 
@@ -17,6 +18,7 @@ public class AdminCp_Platform extends Controller {
     /*
      * Handles GET:/admin/platforms
      */
+    @AuthRequired
     public static Result platformList() {
         String msg = flash(FLASH_PLATFORM_LIST);
         PlatformBo[] allPlatforms = AsmDao.getAllPlatforms();
@@ -26,6 +28,7 @@ public class AdminCp_Platform extends Controller {
     /*
      * Handles GET:/admin/createPlatform
      */
+    @AuthRequired
     public static Result createPlatform() {
         return Results.ok(views.html.admin.platform_create.render(null));
     }
@@ -33,6 +36,7 @@ public class AdminCp_Platform extends Controller {
     /*
      * Handles POST:/admin/createPlatform
      */
+    @AuthRequired
     public static Result createPlatformSubmit() {
         IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
         PlatformBo platformBo = Form.form(PlatformBo.class).bindFromRequest().get();
@@ -46,6 +50,7 @@ public class AdminCp_Platform extends Controller {
     /*
      * Handles GET:/admin/editPlatform
      */
+    @AuthRequired
     public static Result editPlatform(String id) {
         PlatformBo platform = AsmDao.getPlatform(id);
         return Results.ok(views.html.admin.platform_edit.render(platform));
@@ -54,6 +59,7 @@ public class AdminCp_Platform extends Controller {
     /*
      * Handles POST:/admin/editPlatform
      */
+    @AuthRequired
     public static Result editPlatformSubmit(String id) {
         PlatformBo platformBo = AsmDao.getPlatform(id);
         if (platformBo == null) {
@@ -70,6 +76,7 @@ public class AdminCp_Platform extends Controller {
     /*
      * Handles GET:/admin/deletePlatform?id=xxx
      */
+    @AuthRequired
     public static Result deletePlatform(String id) {
         PlatformBo platform = AsmDao.getPlatform(id);
         return Results.ok(views.html.admin.platform_delete.render(platform));
@@ -78,6 +85,7 @@ public class AdminCp_Platform extends Controller {
     /*
      * Handles POST:/admin/deletePlatform?id=xxx
      */
+    @AuthRequired
     public static Result deletePlatformSubmit(String id) {
         PlatformBo platformBo = AsmDao.getPlatform(id);
         if (platformBo == null) {

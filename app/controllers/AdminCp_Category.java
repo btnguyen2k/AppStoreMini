@@ -11,6 +11,7 @@ import bo.AppCategoryBo;
 import bo.AsmDao;
 
 import com.github.ddth.plommon.utils.IdGenerator;
+import compositions.AuthRequired;
 
 public class AdminCp_Category extends Controller {
 
@@ -19,6 +20,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles GET:/admin/appCategories
      */
+    @AuthRequired
     public static Result appCategoryList() {
         String msg = flash(FLASH_CATEGORY_LIST);
         AppCategoryBo[] allCategories = AsmDao.getAllAppCategories();
@@ -28,6 +30,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles GET:/admin/createAppCategory
      */
+    @AuthRequired
     public static Result createAppCategory() {
         return Results.ok(views.html.admin.app_category_create.render(null));
     }
@@ -35,6 +38,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles POST:/admin/createAppCategory
      */
+    @AuthRequired
     public static Result createAppCategorySubmit() {
         IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
         AppCategoryBo categoryBo = Form.form(AppCategoryBo.class).bindFromRequest().get();
@@ -49,6 +53,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles GET:/admin/editAppCategory
      */
+    @AuthRequired
     public static Result editAppCategory(String id) {
         AppCategoryBo category = AsmDao.getAppCategory(id);
         return Results.ok(views.html.admin.app_category_edit.render(category));
@@ -57,6 +62,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles POST:/admin/editAppCategory
      */
+    @AuthRequired
     public static Result editAppCategorySubmit(String id) {
         AppCategoryBo category = AsmDao.getAppCategory(id);
         if (category == null) {
@@ -74,6 +80,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles GET:/admin/moveDownAppCategory?id=xxx
      */
+    @AuthRequired
     public static Result moveDownAppCategory(String id) {
         AppCategoryBo category = AsmDao.getAppCategory(id);
         if (category != null) {
@@ -102,6 +109,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles GET:/admin/moveUpAppCategory?id=xxx
      */
+    @AuthRequired
     public static Result moveUpAppCategory(String id) {
         AppCategoryBo category = AsmDao.getAppCategory(id);
         if (category != null) {
@@ -131,6 +139,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles GET:/admin/deleteAppCategory?id=xxx
      */
+    @AuthRequired
     public static Result deleteAppCategory(String id) {
         AppCategoryBo category = AsmDao.getAppCategory(id);
         return Results.ok(views.html.admin.app_category_delete.render(category));
@@ -139,6 +148,7 @@ public class AdminCp_Category extends Controller {
     /*
      * Handles POST:/admin/deleteAppCategory?id=xxx
      */
+    @AuthRequired
     public static Result deleteAppCategorySubmit(String id) {
         AppCategoryBo category = AsmDao.getAppCategory(id);
         if (category == null) {

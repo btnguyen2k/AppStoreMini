@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.ddth.plommon.utils.IdGenerator;
+import compositions.AuthRequired;
 
 public class AdminCp_App extends Controller {
 
@@ -28,6 +29,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles GET:/admin/apps
      */
+    @AuthRequired
     public static Result appList() {
         String msg = flash(FLASH_APP_LIST);
         ApplicationBo[] allApps = AsmDao.getAllApplications();
@@ -37,6 +39,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles GET:/admin/createApp
      */
+    @AuthRequired
     public static Result createApp() {
         AppCategoryBo[] allCategories = AsmDao.getAllAppCategories();
         return Results.ok(views.html.admin.app_create.render(null, allCategories));
@@ -45,6 +48,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles POST:/admin/createApp
      */
+    @AuthRequired
     public static Result createAppSubmit() {
         IdGenerator idGen = IdGenerator.getInstance(IdGenerator.getMacAddr());
         ApplicationBo application = Form.form(ApplicationBo.class).bindFromRequest().get();
@@ -59,6 +63,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles GET:/admin/editApp?id=xxx
      */
+    @AuthRequired
     public static Result editApp(String id) {
         ApplicationBo application = AsmDao.getApplication(id);
         AppCategoryBo[] allCategories = AsmDao.getAllAppCategories();
@@ -68,6 +73,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles POST:/admin/editApp?id=xxx
      */
+    @AuthRequired
     public static Result editAppSubmit(String id) {
         ApplicationBo application = AsmDao.getApplication(id);
         if (application == null) {
@@ -86,6 +92,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles GET:/admin/deleteApp?id=xxx
      */
+    @AuthRequired
     public static Result deleteApp(String id) {
         ApplicationBo application = AsmDao.getApplication(id);
         return Results.ok(views.html.admin.app_delete.render(application));
@@ -94,6 +101,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles POST:/admin/deleteApp?id=xxx
      */
+    @AuthRequired
     public static Result deleteAppSubmit(String id) {
         ApplicationBo application = AsmDao.getApplication(id);
         if (application == null) {
@@ -109,6 +117,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles: GET:/admin/latestRelease?app=xxx&platform=yyy
      */
+    @AuthRequired
     public static Result latestRelease(String appId, String platformId) {
         AppReleaseBo latestAppRelease = AsmDao.getLatestAppRelease(appId, platformId);
         ObjectNode result = Json.newObject();
@@ -125,6 +134,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles GET:/admin/releaseApp?app=xxx&platform=yyy
      */
+    @AuthRequired
     public static Result releaseApp(String appId, String platformId) {
         ApplicationBo app = AsmDao.getApplication(appId);
         if (app == null) {
@@ -147,6 +157,7 @@ public class AdminCp_App extends Controller {
     /*
      * Handles POST:/admin/releaseApp?app=xxx
      */
+    @AuthRequired
     public static Result releaseAppSubmit(String appId) {
         ApplicationBo app = AsmDao.getApplication(appId);
         if (app == null) {

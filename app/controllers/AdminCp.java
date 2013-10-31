@@ -6,14 +6,19 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Results;
+import asm.Constants;
 import bo.AsmDao;
 import bo.UserBo;
+
+import com.github.ddth.plommon.utils.SessionUtils;
+import compositions.AuthRequired;
 
 public class AdminCp extends Controller {
 
     /*
      * Handles GET:/admin/index
      */
+    @AuthRequired
     public static Result index() {
         return Results.ok(views.html.admin.index.render());
     }
@@ -38,6 +43,7 @@ public class AdminCp extends Controller {
             flash("login", msg);
             return Results.redirect(routes.AdminCp.login());
         } else {
+            SessionUtils.setSession(Constants.SESSION_USER_ID, user.getId());
             return Results.redirect(routes.AdminCp.index());
         }
     }
