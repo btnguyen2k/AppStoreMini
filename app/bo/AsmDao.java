@@ -142,9 +142,8 @@ public class AsmDao extends BaseMysqlDao {
      * @param platform
      */
     public static void delete(PlatformBo platform) {
-        final String[] COLUMNS = new String[] { "pid" };
-        final Object[] VALUES = new Object[] { platform.getId() };
-        delete(TABLE_PLATFORM, COLUMNS, VALUES);
+        delete(TABLE_APP_RELEASE, new String[] { "platform_id" }, new Object[] { platform.getId() });
+        delete(TABLE_PLATFORM, new String[] { "pid" }, new Object[] { platform.getId() });
         invalidate(platform);
     }
 
@@ -510,9 +509,8 @@ public class AsmDao extends BaseMysqlDao {
      * @param app
      */
     public static void delete(ApplicationBo app) {
-        final String[] COLUMNS = new String[] { "aid" };
-        final Object[] VALUES = new Object[] { app.getId() };
-        delete(TABLE_APPLICATION, COLUMNS, VALUES);
+        delete(TABLE_APP_RELEASE, new String[] { "app_id" }, new Object[] { app.getId() });
+        delete(TABLE_APPLICATION, new String[] { "aid" }, new Object[] { app.getId() });
         invalidate(app);
     }
 
