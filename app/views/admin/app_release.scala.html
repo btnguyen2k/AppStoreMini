@@ -84,9 +84,13 @@
                 <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp_App.appList()'">@Messages("msg.cancel")</button>
                 <p>&nbsp;</p>
                 
-                <div class="form-group">
-                    <!-- <label for="frm_summary">@Messages("msg.app.summary")</label> -->
-                    <textarea class="form-control" id="frm_summary" name="summary" rows="6" readonly="readonly">@tags.textOrEmpty(app.getSummary())</textarea>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        @Messages("msg.app.summary")
+                    </div>
+                    <div class="panel-body">
+                        @Html(app.getSummary())
+                    </div>
                 </div>
             </form>
         </div>

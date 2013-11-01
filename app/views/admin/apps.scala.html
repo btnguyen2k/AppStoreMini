@@ -12,9 +12,9 @@
                 </div>
             }
             <div class="panel panel-success">
-                <div class="panel-heading">@Messages("msg.apps")</div>
+                <!-- <div class="panel-heading">@Messages("msg.apps")</div> -->
                 @if(apps==null || apps.length==0){
-                    <div class="panel-body">                
+                    <div class="panel-body">
                         <p>@Messages("msg.nodata")</p>
                     </div>
                 } else {
@@ -37,9 +37,12 @@
 								    <div style="margin-top: 10px"></div>
 								    <a href="@routes.AdminCp_App.editApp(app.getId())" class="btn btn-default btn-primary btn-xs"><i class="glyphicon glyphicon-edit" title="@Messages("msg.edit")"></i> @Messages("msg.edit")</a>
 								    <a href="@routes.AdminCp_App.deleteApp(app.getId())" class="btn btn-default btn-danger btn-xs"><i class="glyphicon glyphicon-remove" title="@Messages("msg.delete")"></i> @Messages("msg.delete")</a>
+								    
+								    <a href="@routes.AdminCp_App.moveUpApp(app.getId())"><i class="glyphicon glyphicon-arrow-up" title="@Messages("msg.moveUp")"></i></a>
+								    <a href="@routes.AdminCp_App.moveDownApp(app.getId())"><i class="glyphicon glyphicon-arrow-down" title="@Messages("msg.moveDown")"></i></a>
 	                             </td>
 	                            <td>
-	                                @Html(app.getSummary())
+	                                <div style="font-size: small; max-height: 150px; overflow:scroll;">@Html(app.getSummary())</div>
 	                            </td>
 	                        </tr>
 	                    }

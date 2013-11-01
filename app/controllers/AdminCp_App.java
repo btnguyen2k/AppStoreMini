@@ -201,4 +201,65 @@ public class AdminCp_App extends Controller {
             return Results.redirect(routes.AdminCp_App.appList());
         }
     }
+
+    /*
+     * Handles GET:/admin/moveDownApp?id=xxx
+     */
+    @AuthRequired
+    public static Result moveDownApp(String id) {
+        ApplicationBo app = AsmDao.getApplication(id);
+        if (app != null) {
+            /* Note: applications are order descendingly */
+            ApplicationBo[] allApps = AsmDao.getAllApplications();
+            if (allApps != null && allApps.length > 1) {
+                for (int i = 0; i < allApps.length - 1; i++) {
+                    if (StringUtils.equals(allApps[i].getId(), id)) {
+                        Integer oldPosition = allApps[i].getPosition();
+                        if (oldPosition == null) {
+                            oldPosition = (int) (System.currentTimeMillis() / 1000);
+                        }
+                        allApps[i + 1].setPosition(oldPosition);
+                        AsmDao.update(allApps[i + 1]);
+                        allApps[i].setPosition(oldPosition.intValue() - 1);
+                        AsmDao.update(allApps[i]);
+                        break;
+                    }
+                }
+            }
+            String msg = Messages.get("msg.app.edit.done", app.getTitle());
+            flash(FLASH_APP_LIST, msg);
+        }
+        return Results.redirect(routes.AdminCp_App.appList());
+    }
+
+    /*
+     * Handles GET:/admin/moveUpApp?id=xxx
+     */
+    @AuthRequired
+    public static Result moveUpApp(String id) {
+        ApplicationBo app = AsmDao.getApplication(id);
+        if (app != null) {
+            /* Note: applications are order descendingly */
+            ApplicationBo[] allApps = AsmDao.getAllApplications();
+            if (allApps != null && allApps.length > 1) {
+                for (int i = 1; i < allApps.length; i++) {
+                    if (StringUtils.equals(allApps[i].getId(), id)) {
+                        Integer oldPosition = allApps[i].getPosition();
+                        if (oldPosition == null) {
+                            oldPosition = (int) (System.currentTimeMillis() / 1000);
+                        }
+                        allApps[i - 1].setPosition(oldPosition);
+                        AsmDao.update(allApps[i - 1]);
+                        allApps[i].setPosition(oldPosition.intValue() + 1);
+                        AsmDao.update(allApps[i]);
+                        break;
+                    }
+                }
+
+            }
+            String msg = Messages.get("msg.app.edit.done", app.getTitle());
+            flash(FLASH_APP_LIST, msg);
+        }
+        return Results.redirect(routes.AdminCp_App.appList());
+    }
 }

@@ -15,6 +15,9 @@ msg.yes = yes
 msg.no = no
 msg.nodata = No data to display
 
+msg.moveUp = Move Up
+msg.moveDown = Move Down
+
 msg.actions = Actions
 msg.delete = Delete
 msg.edit = Edit

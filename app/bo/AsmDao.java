@@ -549,7 +549,7 @@ public class AsmDao extends BaseMysqlDao {
         final String CACHE_KEY = cacheKeyAllApplications();
         List<Map<String, Object>> dbRows = getFromCache(CACHE_KEY, List.class);
         if (dbRows == null) {
-            final String SQL_TEMPLATE = "SELECT aid AS {1} FROM {0} ORDER BY aposition";
+            final String SQL_TEMPLATE = "SELECT aid AS {1} FROM {0} ORDER BY aposition DESC";
             final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_APPLICATION,
                     ApplicationBo.COL_ID);
             final Object[] PARAM_VALUES = new Object[] {};
@@ -586,6 +586,7 @@ public class AsmDao extends BaseMysqlDao {
             final Object[] WHERE_VALUES = new Object[] { app.getId() };
             update(TABLE_APPLICATION, COLUMNS, VALUES, WHERE_COLUMNS, WHERE_VALUES);
             Map<String, Object> dbRow = app.toMap();
+            invalidate(app);
             putToCache(CACHE_KEY, dbRow);
         }
         return (ApplicationBo) app.markClean();
