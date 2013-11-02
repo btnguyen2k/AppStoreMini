@@ -39,6 +39,14 @@ POST    /admin/deleteAppCategory    controllers.AdminCp_Category.deleteAppCatego
 GET     /admin/moveUpAppCategory    controllers.AdminCp_Category.moveUpAppCategory(id: String)
 GET     /admin/moveDownAppCategory  controllers.AdminCp_Category.moveDownAppCategory(id: String)
 
+GET     /admin/users                controllers.AdminCp_User.userList()
+GET     /admin/createUser           controllers.AdminCp_User.createUser()
+POST    /admin/createUser           controllers.AdminCp_User.createUserSubmit()
+#GET     /admin/editPlatform         controllers.AdminCp_Platform.editPlatform(id: String)
+#POST    /admin/editPlatform         controllers.AdminCp_Platform.editPlatformSubmit(id: String)
+#GET     /admin/deletePlatform       controllers.AdminCp_Platform.deletePlatform(id: String)
+#POST    /admin/deletePlatform       controllers.AdminCp_Platform.deletePlatformSubmit(id: String)
+
 GET     /admin/                     controllers.Application.appRedirect(url="/admin/index")
 GET     /admin                      controllers.Application.appRedirect(url="/admin/index")
 

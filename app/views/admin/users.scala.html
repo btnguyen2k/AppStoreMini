@@ -1,0 +1,55 @@
+@(msg: String, users: Array[bo.UserBo])
+@_layout(){
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            @tags.sideMenu_userMenu()
+        </div>
+        <div class="col-md-9">
+            @if(msg!=null) {
+                <div class="alert alert-success">
+                    <p>@msg</p>
+                </div>
+            }
+            <div class="panel panel-success">
+                <div class="panel-heading"><span class="panel-title">@Messages("msg.users")</span></div>
+                @if(users==null || users.length==0){
+                    <div class="panel-body">
+                        <p>@Messages("msg.nodata")</p>
+                    </div>
+                } else {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@Messages("msg.user.loginName")</th>
+                                <th>@Messages("msg.user.email")</th>
+                                <th>@Messages("msg.user.group")</th>
+                                <th>@Messages("msg.actions")</th>
+                            </tr>
+                        </thead>
+	                    @for(user <- users){
+	                        <tr>
+	                           <td>
+	                               @user.getLoginName()
+	                           </td>
+	                           <td>
+                                   @user.getEmail()
+                               </td>
+                               <td>
+                                   @if(user.getGroup()!=null){@user.getGroup().getTitle()}else{&nbsp;}
+                               </td>
+                               <td>
+                                
+                               </td>
+	                        </tr>
+	                    }
+                    </table>
+                    <div class="panel-footer">
+                        <a href="@routes.AdminCp_User.createUser()" class="btn btn-primary btn-xs">@Messages("msg.user.create")</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+}

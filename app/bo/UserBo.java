@@ -26,6 +26,10 @@ public class UserBo extends BaseBo {
         return DigestUtils.md5Hex(rawPassword).toLowerCase();
     }
 
+    public UsergroupBo getGroup() {
+        return AsmDao.getUsergroup(getGroupId());
+    }
+
     /**
      * Authenticates a user's password.
      * 

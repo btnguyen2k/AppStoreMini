@@ -1,0 +1,43 @@
+@(user: bo.UserBo, usergroups: Array[bo.UsergroupBo])
+<form role="form" method="post">
+    <div class="form-group">
+        <label for="frm_usergroup">@Messages("msg.user.usergroup")</label>
+        <select class="form-control" id="frm_usergroup" name="groupId">
+            @if(usergroups!=null && usergroups.length > 0){
+                @for(usergroup <- usergroups){
+                    <option value="@usergroup.getId()" @if(user!=null && user.getGroupId()==usergroup.getId()){selected="selected"}>@usergroup.getTitle()</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <!-- <label for="frm_loginName">@Messages("msg.user.loginName")</label> -->
+        <input type="text" class="form-control" id="frm_loginName" name="loginName"
+            value="@if(user!=null){@tags.textOrEmpty(user.getLoginName())}"
+            placeholder="@Messages("msg.user.loginName")" />
+    </div>
+    
+    <div class="form-group">
+        <!-- <label for="frm_email">@Messages("msg.user.email")</label> -->
+        <input type="text" class="form-control" id="frm_email" name="email"
+            value="@if(user!=null){@tags.textOrEmpty(user.getEmail())}"
+            placeholder="@Messages("msg.user.email")" />
+    </div>
+
+    <div class="form-group">
+        <!-- <label for="frm_password">@Messages("msg.user.password")</label> -->
+        <input type="password" class="form-control" id="frm_password" name="password"
+            placeholder="@Messages("msg.user.password")" />
+    </div>
+
+    <div class="form-group">
+        <!-- <label for="frm_confirmedPassword">@Messages("msg.user.confirmedPassword")</label> -->
+        <input type="password" class="form-control" id="frm_confirmedPassword" name="confirmedPassword"
+            placeholder="@Messages("msg.user.confirmedPassword")" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">@Messages("msg.save")</button>
+    <button type="button" class="btn btn-default" onclick="javascript:location.href='@routes.AdminCp_User.userList()'">@Messages("msg.cancel")</button>
+    <p>&nbsp;</p>
+</form>

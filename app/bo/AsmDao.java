@@ -23,6 +23,8 @@ public class AsmDao extends BaseMysqlDao {
     private final static AppReleaseBo[] EMPTY_ARR_APP_RELEASE_BO = new AppReleaseBo[0];
     private final static PlatformBo[] EMPTY_ARR_PLATFORM_BO = new PlatformBo[0];
     private final static AppCategoryBo[] EMPTY_ARR_APP_CATEGORY_BO = new AppCategoryBo[0];
+    private final static UserBo[] EMPTY_ARR_USER_BO = new UserBo[0];
+    private final static UsergroupBo[] EMPTY_ARR_USERGROUP_BO = new UsergroupBo[0];
 
     /*----------------------------------------------------------------------*/
     private static String cacheKeyPlatform(String id) {
@@ -50,8 +52,13 @@ public class AsmDao extends BaseMysqlDao {
         return cacheKeyUsergroup(usergroup.getId());
     }
 
+    private static String cacheKeyAllUsergroups() {
+        return "ALL_USERGROUPS";
+    }
+
     private static void invalidate(UsergroupBo usergroup) {
         removeFromCache(cacheKey(usergroup));
+        removeFromCache(cacheKeyAllUsergroups());
     }
 
     private static String cacheKeyUser(String id) {
@@ -62,8 +69,13 @@ public class AsmDao extends BaseMysqlDao {
         return cacheKeyUser(user.getId());
     }
 
+    private static String cacheKeyAllUsers() {
+        return "ALL_USERS";
+    }
+
     private static void invalidate(UserBo user) {
         removeFromCache(cacheKey(user));
+        removeFromCache(cacheKeyAllUsers());
     }
 
     private static String cacheKeyAppCategory(String id) {
@@ -274,6 +286,36 @@ public class AsmDao extends BaseMysqlDao {
     }
 
     /**
+     * Gets all usergroups as a list.
+     * 
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static UsergroupBo[] getAllUsergroups() {
+        final String CACHE_KEY = cacheKeyAllUsergroups();
+        List<Map<String, Object>> dbRows = getFromCache(CACHE_KEY, List.class);
+        if (dbRows == null) {
+            final String SQL_TEMPLATE = "SELECT gid AS {1} FROM {0} ORDER BY gtitle";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_USERGROUP,
+                    UsergroupBo.COL_ID);
+            final Object[] PARAM_VALUES = new Object[] {};
+            dbRows = select(SQL, PARAM_VALUES);
+            putToCache(CACHE_KEY, dbRows);
+        }
+        List<UsergroupBo> result = new ArrayList<UsergroupBo>();
+        if (dbRows != null) {
+            for (Map<String, Object> dbRow : dbRows) {
+                String id = DPathUtils.getValue(dbRow, UsergroupBo.COL_ID, String.class);
+                UsergroupBo usergroup = getUsergroup(id);
+                if (usergroup != null) {
+                    result.add(usergroup);
+                }
+            }
+        }
+        return result.toArray(EMPTY_ARR_USERGROUP_BO);
+    }
+
+    /**
      * Updates an existing usergroup.
      * 
      * @param usergroup
@@ -343,6 +385,35 @@ public class AsmDao extends BaseMysqlDao {
             putToCache(CACHE_KEY, dbRow);
         }
         return dbRow != null ? (UserBo) new UserBo().fromMap(dbRow) : null;
+    }
+
+    /**
+     * Gets all users as a list.
+     * 
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static UserBo[] getAllUsers() {
+        final String CACHE_KEY = cacheKeyAllUsers();
+        List<Map<String, Object>> dbRows = getFromCache(CACHE_KEY, List.class);
+        if (dbRows == null) {
+            final String SQL_TEMPLATE = "SELECT uid AS {1} FROM {0} ORDER BY ugroup_id, ulogin_name";
+            final String SQL = MessageFormat.format(SQL_TEMPLATE, TABLE_USER, UserBo.COL_ID);
+            final Object[] PARAM_VALUES = new Object[] {};
+            dbRows = select(SQL, PARAM_VALUES);
+            putToCache(CACHE_KEY, dbRows);
+        }
+        List<UserBo> result = new ArrayList<UserBo>();
+        if (dbRows != null) {
+            for (Map<String, Object> dbRow : dbRows) {
+                String id = DPathUtils.getValue(dbRow, UserBo.COL_ID, String.class);
+                UserBo user = getUser(id);
+                if (user != null) {
+                    result.add(user);
+                }
+            }
+        }
+        return result.toArray(EMPTY_ARR_USER_BO);
     }
 
     /**

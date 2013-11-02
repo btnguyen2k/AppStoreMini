@@ -83,4 +83,23 @@ error.invalid.version = Error: Invalid version number!
 
 error.404.app = Error: App not found!
 
-msg.copyright = (C) 2013 by AppStore Mini
+msg.user_management = User Management
+msg.users = User List
+msg.user_groups = User Groups
+msg.user.loginName = Login Name
+msg.user.email = Email
+msg.user.group = Group
+
+msg.user.create = Create New User Account
+msg.user.create.done = User "{0}" has been created successfully!
+msg.user.delete = Delete User Account "{0}"
+msg.user.delete.confirmation = Are you really sure you wish to delete User "{0}"?
+msg.user.delete.done = User "{0}" has been deleted successfully!
+msg.user.edit = Edit User Account "{0}"
+msg.user.edit.done = User "{0}" has been updated successfully!
+
+msg.user.loginName = Login Name
+msg.user.email = Email
+msg.user.usergroup = User Group
+msg.user.password = Password
+msg.user.confirmedPassword = Confirmed Password
