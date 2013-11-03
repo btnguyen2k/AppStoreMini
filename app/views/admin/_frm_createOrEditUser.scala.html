@@ -1,4 +1,4 @@
-@(user: bo.UserBo, usergroups: Array[bo.UsergroupBo])
+@(editMode: Boolean, user: bo.UserBo, usergroups: Array[bo.UsergroupBo])
 <form role="form" method="post">
     <div class="form-group">
         <label for="frm_usergroup">@Messages("msg.user.usergroup")</label>
@@ -15,7 +15,8 @@
         <!-- <label for="frm_loginName">@Messages("msg.user.loginName")</label> -->
         <input type="text" class="form-control" id="frm_loginName" name="loginName"
             value="@if(user!=null){@tags.textOrEmpty(user.getLoginName())}"
-            placeholder="@Messages("msg.user.loginName")" />
+            placeholder="@Messages("msg.user.loginName")"
+            @if(editMode){readonly="readonly"}/>
     </div>
     
     <div class="form-group">

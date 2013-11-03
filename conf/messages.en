@@ -90,6 +90,8 @@ msg.user.loginName = Login Name
 msg.user.email = Email
 msg.user.group = Group
 
+error.404.user = Error: User Account not found!
+
 msg.user.create = Create New User Account
 msg.user.create.done = User "{0}" has been created successfully!
 msg.user.delete = Delete User Account "{0}"
@@ -103,3 +105,8 @@ msg.user.email = Email
 msg.user.usergroup = User Group
 msg.user.password = Password
 msg.user.confirmedPassword = Confirmed Password
+error.invalid.loginName = Error: Invalid login name!
+error.alreadyExist.loginName = Error: Login name "{0}" has already been used by another user account!
+error.invalid.email = Error: Invalid email!
+error.invalid.password = Error: Invalid password!
+error.invalid.passwords = Error: Password does not match the confirmed one!

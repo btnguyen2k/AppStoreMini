@@ -11,8 +11,8 @@
                     <p>@msg</p>
                 </div>
             }
-            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.user.create")</h3>
-            @_frm_createOrEditUser(false, user, usergroups)
+            <h3 style="margin-top: 0px; border-bottom: 1px solid #a0a0a0">@Messages("msg.user.edit", user.getLoginName())</h3>
+            @_frm_createOrEditUser(true, user, usergroups)
         </div>
     </div>
 </div>

@@ -24,22 +24,23 @@
                                 <th>@Messages("msg.user.loginName")</th>
                                 <th>@Messages("msg.user.email")</th>
                                 <th>@Messages("msg.user.group")</th>
-                                <th>@Messages("msg.actions")</th>
+                                <th style="text-align: center;">@Messages("msg.actions")</th>
                             </tr>
                         </thead>
 	                    @for(user <- users){
 	                        <tr>
-	                           <td>
+	                           <td style="vertical-align: middle">
 	                               @user.getLoginName()
 	                           </td>
-	                           <td>
+	                           <td style="vertical-align: middle">
                                    @user.getEmail()
                                </td>
-                               <td>
+                               <td style="vertical-align: middle">
                                    @if(user.getGroup()!=null){@user.getGroup().getTitle()}else{&nbsp;}
                                </td>
-                               <td>
-                                
+                               <td style="text-align: center; vertical-align: middle">
+                                   <a href="@routes.AdminCp_User.editUser(user.getId())"><i class="glyphicon glyphicon-edit" style="color: blue; font-size: large" title="@Messages("msg.edit")"></i></a>
+                                   <a href="@routes.AdminCp_User.deleteUser(user.getId())"><i class="glyphicon glyphicon-remove" style="color: red; font-size: large" title="@Messages("msg.delete")"></i></a>
                                </td>
 	                        </tr>
 	                    }
