@@ -183,12 +183,35 @@ public class AdminCp_User extends Controller {
         return Results.redirect(routes.AdminCp_User.userList());
     }
 
+    private static Result checkDeleteUser(UserBo user) {
+        if (user == null) {
+            String msg = Messages.get("error.404.user");
+            String url = routes.AdminCp_User.userList().url();
+            return Results.ok(views.html.error.render(msg, url));
+        }
+
+        if (StringUtils.equals(Constants.USERGROUP_ADMIN, user.getGroupId())) {
+            // can not delete Admin account
+            String msg = Messages.get("error.403.deleteUser", user.getLoginName());
+            String url = routes.AdminCp_User.userList().url();
+            return Results.ok(views.html.error.render(msg, url));
+        }
+
+        return null;
+    }
+
     /*
      * Handles GET:/admin/deleteUser?id=xxx
      */
     @AuthRequired
     public static Result deleteUser(String id) {
-        return null;
+        UserBo user = AsmDao.getUser(id);
+        Result checkResult = checkDeleteUser(user);
+        if (checkResult != null) {
+            return checkResult;
+        }
+
+        return Results.ok(views.html.admin.user_delete.render(user));
     }
 
     /*
@@ -196,16 +219,15 @@ public class AdminCp_User extends Controller {
      */
     @AuthRequired
     public static Result deleteUserSubmit(String id) {
-        return null;
-        // ApplicationBo application = AsmDao.getApplication(id);
-        // if (application == null) {
-        // return null;
-        // } else {
-        // AsmDao.delete(application);
-        // String msg = Messages.get("msg.app.delete.done",
-        // application.getTitle());
-        // flash(FLASH_USER_LIST, msg);
-        // return Results.redirect(routes.AdminCp_App.appList());
-        // }
+        UserBo user = AsmDao.getUser(id);
+        Result checkResult = checkDeleteUser(user);
+        if (checkResult != null) {
+            return checkResult;
+        }
+
+        AsmDao.delete(user);
+        String msg = Messages.get("msg.user.delete.done", user.getLoginName());
+        flash(FLASH_USER_LIST, msg);
+        return Results.redirect(routes.AdminCp_User.userList());
     }
 }
