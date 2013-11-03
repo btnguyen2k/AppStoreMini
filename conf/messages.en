@@ -100,6 +100,9 @@ msg.user.delete.done = User "{0}" has been deleted successfully!
 msg.user.edit = Edit User Account "{0}"
 msg.user.edit.done = User "{0}" has been updated successfully!
 
+error.403.editUser = Error: You do not have permission to edit User Account "{0}"!
+error.403.deleteUser = Error: You do not have permission to delete User Account "{0}"!
+
 msg.user.loginName = Login Name
 msg.user.email = Email
 msg.user.usergroup = User Group

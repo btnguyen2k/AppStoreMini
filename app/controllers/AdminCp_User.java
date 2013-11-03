@@ -11,6 +11,8 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Results;
+import utils.Utils;
+import asm.Constants;
 import bo.AsmDao;
 import bo.UserBo;
 import bo.UsergroupBo;
@@ -46,20 +48,27 @@ public class AdminCp_User extends Controller {
         return Results.ok(views.html.admin.user_create.render(errorMsg, user, allUsergroups));
     }
 
+    private static boolean checkLoginName(String loginName) {
+        final Pattern PATTERN_LOGIN_NAME = Pattern.compile("^\\w+$");
+        return PATTERN_LOGIN_NAME.matcher(loginName).matches();
+    }
+
+    private static boolean checkEmail(String email) {
+        final Pattern PATTERN_EMAIL = Pattern.compile("^[^@]+@[^@]+$");
+        return PATTERN_EMAIL.matcher(email).matches();
+    }
+
     /*
      * Handles POST:/admin/createApp
      */
     @AuthRequired
     public static Result createUserSubmit() {
-        final Pattern PATTERN_LOGIN_NAME = Pattern.compile("^\\w+$");
-        final Pattern PATTERN_EMAIL = Pattern.compile("^[^@]+@[^@]+$");
-
         Form<UserBo> form = Form.form(UserBo.class).bindFromRequest();
         UserBo user = form.get();
 
         String loginName = user.getLoginName();
         loginName = loginName != null ? loginName.toLowerCase().trim() : null;
-        if (!PATTERN_LOGIN_NAME.matcher(loginName).matches()) {
+        if (!checkLoginName(loginName)) {
             return createUserSubmitError(Messages.get("error.invalid.loginName", loginName), user);
         }
         UserBo existingUser = AsmDao.getUserByLoginname(loginName);
@@ -70,7 +79,7 @@ public class AdminCp_User extends Controller {
 
         String email = user.getEmail();
         email = email != null ? email.trim() : null;
-        if (!PATTERN_EMAIL.matcher(email).matches()) {
+        if (!checkEmail(email)) {
             return createUserSubmitError(Messages.get("error.invalid.email", email), user);
         }
 
@@ -98,16 +107,35 @@ public class AdminCp_User extends Controller {
         return Results.redirect(routes.AdminCp_User.userList());
     }
 
+    private static Result checkEditUser(UserBo user) {
+        if (user == null) {
+            String msg = Messages.get("error.404.user");
+            String url = routes.AdminCp_User.userList().url();
+            return Results.ok(views.html.error.render(msg, url));
+        }
+
+        if (StringUtils.equals(Constants.USERGROUP_ADMIN, user.getGroupId())) {
+            // can not edit Admin account if you are not another Admin
+            UserBo currentUser = Utils.getCurrentUser();
+            if (!StringUtils.equals(Constants.USERGROUP_ADMIN, currentUser.getId())) {
+                String msg = Messages.get("error.403.editUser", user.getLoginName());
+                String url = routes.AdminCp_User.userList().url();
+                return Results.ok(views.html.error.render(msg, url));
+            }
+        }
+
+        return null;
+    }
+
     /*
      * Handles GET:/admin/editUser?id=xxx
      */
     @AuthRequired
     public static Result editUser(String id) {
         UserBo user = AsmDao.getUser(id);
-        if (user == null) {
-            String msg = Messages.get("error.404.user");
-            String url = routes.AdminCp_User.userList().url();
-            return Results.ok(views.html.error.render(msg, url));
+        Result checkResult = checkEditUser(user);
+        if (checkResult != null) {
+            return checkResult;
         }
 
         UsergroupBo[] allUsergroups = AsmDao.getAllUsergroups();
@@ -119,20 +147,40 @@ public class AdminCp_User extends Controller {
      */
     @AuthRequired
     public static Result editUserSubmit(String id) {
-        // ApplicationBo application = AsmDao.getApplication(id);
-        // if (application == null) {
-        // return null;
-        // } else {
-        // Integer oldPosition = application.getPosition();
-        // application = Form.form(ApplicationBo.class).bindFromRequest().get();
-        // application.setPosition(oldPosition);
-        // application = AsmDao.update(application);
-        // String msg = Messages.get("msg.app.edit.done",
-        // application.getTitle());
-        // flash(FLASH_USER_LIST, msg);
-        // return Results.redirect(routes.AdminCp_App.appList());
-        // }
-        return null;
+        UserBo user = AsmDao.getUser(id);
+        Result checkResult = checkEditUser(user);
+        if (checkResult != null) {
+            return checkResult;
+        }
+
+        Form<UserBo> form = Form.form(UserBo.class).bindFromRequest();
+        UserBo submittedUser = form.get();
+
+        String email = submittedUser.getEmail();
+        email = email != null ? email.trim() : null;
+        if (!checkEmail(email)) {
+            return createUserSubmitError(Messages.get("error.invalid.email", email), submittedUser);
+        }
+
+        String password = submittedUser.getPassword();
+        password = password != null ? password.trim() : null;
+        if (!StringUtils.isEmpty(password)) {
+            Field field = form.field("confirmedPassword");
+            String confirmedPassword = field != null ? field.value() : null;
+            confirmedPassword = confirmedPassword != null ? confirmedPassword.trim() : null;
+            if (!StringUtils.equals(password, confirmedPassword)) {
+                return createUserSubmitError(Messages.get("error.invalid.passwords"), submittedUser);
+            }
+        }
+
+        user.setGroupId(submittedUser.getGroupId());
+        user.setEmail(submittedUser.getEmail());
+        if (!StringUtils.isBlank(password)) {
+            user.setPassword(UserBo.hashPassword(password));
+        }
+        user = AsmDao.update(user);
+        flash(FLASH_USER_LIST, Messages.get("msg.edit.create.done", user.getLoginName()));
+        return Results.redirect(routes.AdminCp_User.userList());
     }
 
     /*
